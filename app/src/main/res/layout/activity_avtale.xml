@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/avtaleLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="AVTALE"
+                android:textSize="32sp" />
+
+            <EditText
+                android:id="@+id/avtaleId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Name"
+                android:visibility="invisible"
+                tools:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/datoLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dato"
+                android:textStyle="bold"
+                tools:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/datoInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="date"
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/tidLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tid"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/tidInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="time"
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/meldingLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Melding"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/meldingInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/leggTilBtn"
+                style="none"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#8BC34A"
+                android:text="Legg til"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/slettBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#BF2519"
+                android:text="Slett"
+                android:textColor="#FFFFFF" />
+            <Button
+                android:id="@+id/oppdaterBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#DCAB1A"
+                android:text="Oppdater"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/visalleBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#1D6281"
+                android:text="VIS ALLE AVTALER" />
+
+            <Button
+                android:id="@+id/kontaktmedDenneAvtaleBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#1D6281"
+                android:text="VIS KONTAKTER MED DENNE AVTALE" />
+
+            <Button
+                android:id="@+id/visalleKontakterBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#1D6281"
+                android:text="VIS ALLE KONTAKTER" />
+
+            <ScrollView
+                android:id="@+id/ScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:dividerPadding="22px"
+                    android:orientation="vertical"
+                    android:showDividers="middle|end" />
+            </ScrollView>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

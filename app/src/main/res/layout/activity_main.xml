@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="VENN APP"
+        android:textAlignment="center"
+        android:textColor="#476E8C"
+        android:textSize="42sp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="238dp"
+        android:textAlignment="center"
+        app:srcCompat="@drawable/logo" />
+
+    <Button
+        android:id="@+id/kontaktBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#1D6281"
+        android:text="KONTAKTER" />
+
+    <Button
+        android:id="@+id/avtaleBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#1D6281"
+        android:text="AVTALER" />
+
+    <Button
+        android:id="@+id/startPeriodiskServiceBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#8BC34A"
+        android:text="START NOTIFICATION SERVICE" />
+
+    <Button
+        android:id="@+id/stopPeriodiskServiceBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#DCAB1A"
+        android:text="STOP NOTIFICATION SERVICE" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#736C6C"
+        android:text="EXIT" />
+</LinearLayout>
