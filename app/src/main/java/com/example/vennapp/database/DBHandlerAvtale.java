@@ -21,7 +21,7 @@ public class DBHandlerAvtale extends SQLiteOpenHelper {
     static String KEY_TID = "Tid";
     static String KEY_MELDING = "Melding";
     static String TABLE_AVTALER = "Avtaler";
-
+//
 
     static int DATABASE_VERSION = 3;static String DATABASE_NAME = "telefonkontakt";
     public DBHandlerAvtale(Context context)
