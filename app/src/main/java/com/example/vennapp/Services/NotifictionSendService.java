@@ -47,6 +47,7 @@ public class NotifictionSendService  extends Service {
         List<Avtale> avtaler = dbHelperAvtale.finnAlleAvtalerMedGittDato(db,new java.sql.Date(currentTimeInMillis).toString());
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         String defaultMessage = sharedPreferences.getString("message","hi!");
+        Toast.makeText(getApplicationContext(), "Du har snart en avtale ", Toast.LENGTH_SHORT).show();
         //Alle kontakter for denne avtalen skal ha beskjed
         for (Avtale x : avtaler) {
             String melding = x.getMelding();

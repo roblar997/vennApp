@@ -37,8 +37,8 @@ public class PeriodiskNotificationService extends Service {
         calendar.set(Calendar.HOUR_OF_DAY,localDate.getYear());
         calendar.set(Calendar.MONTH,localDate.getMonthValue());
         calendar.set(Calendar.DAY_OF_MONTH,localDate.getDayOfMonth());
-        calendar.set(Calendar.HOUR_OF_DAY, localTime.getHour());
-        calendar.set(Calendar.MINUTE, localTime.getMinute());
+        calendar.set(Calendar.HOUR_OF_DAY, LocalTime.now().getHour());
+        calendar.set(Calendar.MINUTE, LocalTime.now().getMinute());
         alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 24*AlarmManager.INTERVAL_HOUR, pintent);
         return super.onStartCommand(intent, flags, startId);}
 }

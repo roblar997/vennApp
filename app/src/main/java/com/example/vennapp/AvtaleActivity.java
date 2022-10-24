@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
+import android.util.Patterns;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
@@ -32,10 +33,14 @@ import com.example.vennapp.database.models.Kontakt;
 import com.example.vennapp.database.models.KontaktAvtale;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AvtaleActivity extends AppCompatActivity {
     EditText tidInput;
     EditText datoInput;
+    TextView timeError;
+    TextView dateError;
     EditText meldingInput;
     EditText avtaleId;
     DBHandlerKontakt dbHelperKontakt;
@@ -45,6 +50,24 @@ public class AvtaleActivity extends AppCompatActivity {
 
     SQLiteDatabase db;
     public void leggtil(LinearLayout layout) {
+        String dato = datoInput.getText().toString();
+        String tid = tidInput.getText().toString();
+        Pattern patternDato = Pattern.compile( "^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
+        Matcher matcherDato = patternDato.matcher(dato);
+        boolean found = true;
+        if (!matcherDato.find()) {
+            dateError.setText("Må være formatert yyyy-MM-dd");
+            found = false;
+        }
+        Pattern patternTid = Pattern.compile( "^[0-9]{2}:[0-9]{2}:[0-9]{2}$");
+        Matcher matcherTid = patternTid.matcher(tid);
+        if (!matcherTid.find()) {
+            timeError.setText("Må være formatert HH:mm:ss");
+            found = false;
+        }
+        if(!found ){
+            return;
+        }
         Avtale avtale = new Avtale(datoInput.getText().toString(),tidInput.getText().toString(),meldingInput.getText().toString());
         dbHelperAvtale.leggTilAvtale(db,avtale);
         visalle(layout);
@@ -530,6 +553,7 @@ public class AvtaleActivity extends AppCompatActivity {
                 velg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         avtaleId.setText(avtale.get_ID().toString());
                         datoInput.setText(avtale.getDato());
                         tidInput.setText(avtale.getTid());
@@ -606,6 +630,8 @@ public class AvtaleActivity extends AppCompatActivity {
         Button visalleBtn =  findViewById(R.id.visalleBtn);
         avtaleId = (EditText) findViewById(R.id.avtaleId);
         message = (LinearLayout) findViewById(R.id.message);
+        dateError = (TextView) findViewById(R.id.dateError);
+        timeError = (TextView) findViewById(R.id.timeError);
         leggTilBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -649,6 +675,25 @@ public class AvtaleActivity extends AppCompatActivity {
     }
     public void oppdater(LinearLayout layout) {
         Avtale avtale = new Avtale();
+        String dato = datoInput.getText().toString();
+        String tid = tidInput.getText().toString();
+        Pattern patternDato = Pattern.compile( "^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
+        Matcher matcherDato = patternDato.matcher(dato);
+        boolean found = true;
+        if (!matcherDato.find()) {
+            dateError.setText("Må være formatert yyyy-MM-dd");
+            found = false;
+        }
+        Pattern patternTid = Pattern.compile( "^[0-9]{2}:[0-9]{2}:[0-9]{2}$");
+        Matcher matcherTid = patternTid.matcher(tid);
+        if (!matcherTid.find()) {
+            timeError.setText("Må være formatert HH:mm:ss");
+            found = false;
+        }
+        if(!found ){
+            return;
+        }
+
         avtale.setTid(tidInput.getText().toString());
         avtale.setDato(datoInput.getText().toString());
         avtale.setMelding(meldingInput.getText().toString());

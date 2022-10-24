@@ -36,10 +36,18 @@
                 android:id="@+id/datoLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dato"
+                android:text="Dato (format yyyy-MM-dd) "
                 android:textStyle="bold"
                 tools:textSize="16sp" />
 
+            <TextView
+                android:id="@+id/dateError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#EA1212"
+                android:textSize="16sp"
+                android:textStyle="bold" />
             <EditText
                 android:id="@+id/datoInput"
                 android:layout_width="match_parent"
@@ -52,10 +60,18 @@
                 android:id="@+id/tidLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tid"
+                android:text="Tid (format HH:mm:ss) "
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/timeError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#E40404"
+                android:textSize="16sp"
+                android:textStyle="bold" />
             <EditText
                 android:id="@+id/tidInput"
                 android:layout_width="match_parent"
