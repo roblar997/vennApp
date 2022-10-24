@@ -5,10 +5,14 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Calendar;
 
 public class PeriodiskNotificationService extends Service {
@@ -21,6 +25,20 @@ public class PeriodiskNotificationService extends Service {
         Intent i = new Intent(this, NotifictionSendService.class);
         PendingIntent pintent = PendingIntent.getService(this, 0, i, 0);
         AlarmManager alarm =(AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 60 * 1000, pintent);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        int hour = sharedPreferences.getInt("hour",15);
+        int minute  = sharedPreferences.getInt("minute",30);
+
+        LocalTime localTime = LocalTime.of(hour, minute);
+        LocalDate localDate = LocalDate.now();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY,localDate.getYear());
+        calendar.set(Calendar.MONTH,localDate.getMonthValue());
+        calendar.set(Calendar.DAY_OF_MONTH,localDate.getDayOfMonth());
+        calendar.set(Calendar.HOUR_OF_DAY, localTime.getHour());
+        calendar.set(Calendar.MINUTE, localTime.getMinute());
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 24*AlarmManager.INTERVAL_HOUR, pintent);
         return super.onStartCommand(intent, flags, startId);}
 }

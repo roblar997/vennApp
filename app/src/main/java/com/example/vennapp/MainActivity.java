@@ -8,6 +8,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -33,6 +35,7 @@ import com.example.vennapp.database.DBHandlerKontakt;
 import com.example.vennapp.database.models.Kontakt;
 import com.example.vennapp.receivers.AvtaleBroadcastReceiver;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -261,6 +264,17 @@ public class MainActivity extends AppCompatActivity {
     public void startService(View v) {
         Intent intent = new Intent(this, NotifictionSendService.class);
         this.startService(intent);
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Resources res = getResources();
+        int hour  = res.getInteger(R.integer.hourNotify);
+        int minute = res.getInteger(R.integer.minuteNotify);
+        String message = res.getString(R.string.message);
+        // write all the data entered by the user in SharedPreference and apply
+        editor.putInt("hour", hour);
+        editor.putInt("minute", minute);
+        editor.putString("message", message);
+        editor.apply();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
