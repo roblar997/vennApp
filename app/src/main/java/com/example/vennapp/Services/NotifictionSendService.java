@@ -67,7 +67,7 @@ public class NotifictionSendService  extends Service {
 
         };
 
-        Toast.makeText(getApplicationContext(), "Du har snart en avtale ", Toast.LENGTH_SHORT).show();
+
         NotificationManager notificationManager = (NotificationManager)  getSystemService(NOTIFICATION_SERVICE);
         Intent i = new Intent(this, ResultatActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, i, 0);

@@ -51,7 +51,7 @@ public class DBHandlerAvtale extends SQLiteOpenHelper {
     }
     public List<Avtale> finnAlleAvtalerMedGittDato(SQLiteDatabase db,String date) {
         List<Avtale> avtaleListe = new ArrayList<Avtale>();
-        String selectQuery = "SELECT * FROM " + TABLE_AVTALER + " WHERE KEY_dato = " + date ;
+        String selectQuery = "SELECT * FROM " + TABLE_AVTALER + " WHERE " + KEY_DATO + " = " + date ;
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
