@@ -234,6 +234,7 @@ public class KontaktActivity extends AppCompatActivity {
                 startActivity(mainIntentHome);
                 return true;
             case R.id.avtale:
+                Intent i2 = new Intent(this, ResultatActivity.class);
                 Intent mainIntentAvtale = new Intent(KontaktActivity.this, AvtaleActivity.class);
                 startActivity(mainIntentAvtale);
                 return true;
@@ -246,9 +247,9 @@ public class KontaktActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kontakt);
-        fornavnInput = (EditText) findViewById(R.id.telefonInput);
+        fornavnInput = (EditText) findViewById(R.id.fornavnInput);
         etternavnInput = (EditText) findViewById(R.id.etternavnInput);
-        telefonInput = (EditText) findViewById(R.id.fornavnInput);
+        telefonInput = (EditText) findViewById(R.id.telefonInput);
         Button leggTilBtn =  findViewById(R.id.leggTilBtn);
         Button oppdaterBtn =  findViewById(R.id.oppdaterBtn);
         Button slettBtn =  findViewById(R.id.slettBtn);

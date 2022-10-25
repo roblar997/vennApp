@@ -12,7 +12,7 @@ public class AvtaleBroadcastReceiver  extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context.getApplicationContext(), "I BroadcastReceiver", Toast.LENGTH_SHORT).show();
+
         Intent i = new Intent(context, PeriodiskNotificationService.class);
         context.startService(i);
     }

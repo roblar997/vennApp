@@ -1,5 +1,6 @@
 package com.example.vennapp;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,11 +10,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
@@ -25,9 +28,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 
 import com.example.vennapp.Services.NotifictionSendService;
 import com.example.vennapp.Services.PeriodiskNotificationService;
@@ -45,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     EditText telefonInput;
     LinearLayout message;
     String CHANNEL_ID = "MinKanal";
+
 
     DBHandlerKontakt dbHelper;
     SQLiteDatabase db;
@@ -262,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.createNotificationChannel(channel);
     }
     public void startService(View v) {
-        Intent intent = new Intent(this, NotifictionSendService.class);
+        Intent intent = new Intent(this, PeriodiskNotificationService.class);
         this.startService(intent);
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -275,7 +281,11 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt("minute", minute);
         editor.putString("message", message);
         editor.apply();
+        Intent periodiskIntent = new Intent();
+        periodiskIntent.setAction("com.example.service.PeriodiskNotificationService");
+        sendBroadcast(periodiskIntent);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -286,8 +296,8 @@ public class MainActivity extends AppCompatActivity {
         Button startPeriodiskServiceBtn = findViewById(R.id.startPeriodiskServiceBtn);
 
         BroadcastReceiver myBroadcastReceiver = new AvtaleBroadcastReceiver();
-        IntentFilter filter = new IntentFilter("com.example.service.MITTSIGNAL");
-        filter.addAction("com.example.service.MITTSIGNAL");
+        IntentFilter filter = new IntentFilter("com.example.service.PeriodiskNotificationService");
+        filter.addAction("com.example.service.PeriodiskNotificationService");
         this.registerReceiver(myBroadcastReceiver, filter);
         createNotificationChannel();
         avtaleBtn.setOnClickListener(new View.OnClickListener() {

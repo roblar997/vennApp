@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -24,6 +25,7 @@ public class PeriodiskNotificationService extends Service {
         java.util.Calendar cal = Calendar.getInstance();
         Intent i = new Intent(this, NotifictionSendService.class);
         PendingIntent pintent = PendingIntent.getService(this, 0, i, 0);
+
         AlarmManager alarm =(AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
@@ -34,11 +36,13 @@ public class PeriodiskNotificationService extends Service {
         LocalDate localDate = LocalDate.now();
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY,localDate.getYear());
-        calendar.set(Calendar.MONTH,localDate.getMonthValue());
+        calendar.set(Calendar.YEAR,localDate.getYear());
+        calendar.set(Calendar.MONTH,localDate.getMonthValue()-1);
         calendar.set(Calendar.DAY_OF_MONTH,localDate.getDayOfMonth());
         calendar.set(Calendar.HOUR_OF_DAY, LocalTime.now().getHour());
         calendar.set(Calendar.MINUTE, LocalTime.now().getMinute());
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 24*AlarmManager.INTERVAL_HOUR, pintent);
+
+            alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1L ,pintent);
+
         return super.onStartCommand(intent, flags, startId);}
 }

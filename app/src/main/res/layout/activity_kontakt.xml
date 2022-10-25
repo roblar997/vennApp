@@ -31,7 +31,14 @@
                 android:text="Name"
                 android:visibility="invisible"
                 tools:visibility="invisible" />
-
+            <TextView
+                android:id="@+id/telefonError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#EA1212"
+                android:textSize="16sp"
+                android:textStyle="bold" />
             <TextView
                 android:id="@+id/telefonLabel"
                 android:layout_width="match_parent"
@@ -49,13 +56,20 @@
                 android:minHeight="48dp" />
 
             <TextView
-                android:id="@+id/tidLabel"
+                android:id="@+id/fornavnLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Fornavn"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
+            <TextView
+                android:id="@+id/fornavnError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#EA1212"
+                android:textSize="16sp"
+                android:textStyle="bold" />
             <EditText
                 android:id="@+id/fornavnInput"
                 android:layout_width="match_parent"
@@ -71,7 +85,14 @@
                 android:text="Etternavn"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
+            <TextView
+                android:id="@+id/etternavnError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#EA1212"
+                android:textSize="16sp"
+                android:textStyle="bold" />
             <EditText
                 android:id="@+id/etternavnInput"
                 android:layout_width="match_parent"

@@ -51,10 +51,11 @@ public class DBHandlerAvtale extends SQLiteOpenHelper {
     }
     public List<Avtale> finnAlleAvtalerMedGittDato(SQLiteDatabase db,String date) {
         List<Avtale> avtaleListe = new ArrayList<Avtale>();
-        String selectQuery = "SELECT * FROM " + TABLE_AVTALER + " WHERE " + KEY_DATO + " = " + date ;
+        String selectQuery = "SELECT * FROM " + TABLE_AVTALER + " t1 WHERE t1.Dato='" + date+"'";
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
+
                 Avtale avtale = new Avtale();
                 avtale.set_ID(cursor.getLong(0));
                 avtale.setDato(cursor.getString(1));
