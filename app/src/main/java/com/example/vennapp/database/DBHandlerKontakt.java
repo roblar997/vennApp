@@ -36,7 +36,17 @@ public class DBHandlerKontakt extends SQLiteOpenHelper {
         db.execSQL(LAG_TABELL);
     }
 
-
+    public Long getMaxId(SQLiteDatabase db){
+        String query = "SELECT MAX ( " + KEY_ID + ") FROM " + TABLE_KONTAKTER;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                return cursor.getLong(0);
+            }
+            while (cursor.moveToNext());
+        }
+        return 1L;
+    }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_KONTAKTER );

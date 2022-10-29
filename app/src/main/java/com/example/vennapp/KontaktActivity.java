@@ -1,9 +1,11 @@
 package com.example.vennapp;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -36,6 +38,8 @@ public class KontaktActivity extends AppCompatActivity {
     EditText friendId;
     EditText telefonInput;
     LinearLayout message;
+    public static String PROVIDER_KONTAKT ="com.example.vennapp.contentprovider.KontaktProvider" ;
+    public static final Uri CONTENT_KONTAKT_URI = Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt");
 
     DBHandlerKontakt dbHelper;
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
@@ -43,14 +47,36 @@ public class KontaktActivity extends AppCompatActivity {
     public void leggtil(LinearLayout layout) {
         Kontakt kontakt = new Kontakt(fornavnInput.getText().toString(),etternavnInput.getText().toString(),telefonInput.getText().toString());
         dbHelper.leggTilKontakt(db,kontakt);
+        try{
+            ContentValues v=new ContentValues();
+            Long id = dbHelper.getMaxId(db);
+            v.put("_ID",id);
+            v.put("Fornavn",fornavnInput.getText().toString());
+            v.put("Etternavn",etternavnInput.getText().toString());
+            v.put("Telefon",telefonInput.getText().toString());
+            getContentResolver().insert(CONTENT_KONTAKT_URI,v);
+        }
+        catch (Exception ex){
+
+        }
 
         visalle(layout);
     }
 
     public void slettKontakt(LinearLayout layout) {
+        if(friendId.getText().toString().isEmpty())
+            return;
         Long kontaktid = (Long.parseLong(friendId.getText().toString()));
         dbHelperKontaktAvtale.fjernAlleAvtalerFraKontakt(db,kontaktid);
         dbHelper.slettKontakt(db,kontaktid);
+
+        try{
+            getContentResolver().delete(CONTENT_KONTAKT_URI,null, new String[]{friendId.getText().toString()});
+
+        }
+        catch (Exception ex){
+
+    }
         visalle(layout);
     }
     public void visalle(LinearLayout layout) {
@@ -288,12 +314,28 @@ public class KontaktActivity extends AppCompatActivity {
         });
     }
     public void oppdater(LinearLayout layout) {
+        if(friendId.getText().toString().isEmpty())
+            return;
         Kontakt kontakt = new Kontakt();
+
         kontakt.setFornavn(fornavnInput.getText().toString());
         kontakt.setEtternavn(etternavnInput.getText().toString());
         kontakt.setTelefonNummer(telefonInput.getText().toString());
         kontakt.set_ID(Long.parseLong(friendId.getText().toString()));
         dbHelper.oppdaterKontakt(db, kontakt);
+        ContentValues v=new ContentValues();
+        try{
+            v.put("_ID",Long.parseLong(friendId.getText().toString()));
+            v.put("Fornavn",fornavnInput.getText().toString());
+            v.put("Etternavn",etternavnInput.getText().toString());
+            v.put("Telefon",telefonInput.getText().toString());
+            getContentResolver().update(CONTENT_KONTAKT_URI,v,null, new String[]{friendId.getText().toString()});
+
+        }
+        catch (Exception ex){
+
+        }
+
         visalle(layout);
     }
     @Override

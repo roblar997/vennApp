@@ -1,11 +1,14 @@
 package com.example.vennapp;
 
+import static com.example.vennapp.contentprovider.AvtaleProvider.CONTENT_URI;
+
 import android.Manifest;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -15,6 +18,7 @@ import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.SpannableString;
@@ -294,6 +298,8 @@ public class MainActivity extends AppCompatActivity {
         Button kontaktBtn = findViewById(R.id.kontaktBtn);
         Button stopPeriodiskServiceBtn = findViewById(R.id.stopPeriodiskServiceBtn);
         Button startPeriodiskServiceBtn = findViewById(R.id.startPeriodiskServiceBtn);
+
+
 
         BroadcastReceiver myBroadcastReceiver = new AvtaleBroadcastReceiver();
         IntentFilter filter = new IntentFilter("com.example.service.PeriodiskNotificationService");

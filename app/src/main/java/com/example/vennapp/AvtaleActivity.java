@@ -1,9 +1,11 @@
 package com.example.vennapp;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -47,6 +49,8 @@ public class AvtaleActivity extends AppCompatActivity {
     DBHandlerAvtale dbHelperAvtale;
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
     LinearLayout message;
+    public static String PROVIDER_AVTALE ="com.example.vennapp.contentprovider.AvtaleProvider" ;
+    public static final Uri CONTENT_AVTALE_URI = Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale");
 
     SQLiteDatabase db;
     public void leggtil(LinearLayout layout) {
@@ -70,12 +74,27 @@ public class AvtaleActivity extends AppCompatActivity {
         }
         Avtale avtale = new Avtale(datoInput.getText().toString(),tidInput.getText().toString(),meldingInput.getText().toString());
         dbHelperAvtale.leggTilAvtale(db,avtale);
-        visalle(layout);
+        //Prøv å legg til
+        try{
+            Long id = dbHelperAvtale.getMaxId(db);
+            ContentValues v=new ContentValues();
+            v.put("_ID",id);
+            v.put("tid",datoInput.getText().toString());
+            v.put("dato",tidInput.getText().toString());
+            v.put("melding",meldingInput.getText().toString());
+            getContentResolver().insert(CONTENT_AVTALE_URI,v);
+            visalle(layout);
+        }
+        catch(Exception ex){
+
+        }
+
     }
 
     public void fjernKontaktFraAvtale(LinearLayout layout, Long kontaktID, Long avtaleId) {
         KontaktAvtale kontaktAvtale = new KontaktAvtale(kontaktID,avtaleId);
         dbHelperKontaktAvtale.fjernKontaktFraAvtale(db,kontaktAvtale);
+
         visalle(layout);
     }
     public void visalleKontakterMedAvtale(LinearLayout layout, Long avtaleIdInput) {
@@ -212,8 +231,8 @@ public class AvtaleActivity extends AppCompatActivity {
                 slett.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                                fjernKontaktFraAvtale(layout,kontakt.get_ID(),avtaleIdInput);
-                                visalleKontakterMedAvtale(layout,avtaleIdInput);
+                        fjernKontaktFraAvtale(layout,kontakt.get_ID(),avtaleIdInput);
+                        visalleKontakterMedAvtale(layout,avtaleIdInput);
                     }
                 });
 
@@ -344,9 +363,9 @@ public class AvtaleActivity extends AppCompatActivity {
                 leggtil.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                            String avtaleInp = avtaleId.getText().toString();
-                            if(!avtaleInp.isEmpty())
-                                 leggtilKontaktTilAvtale(layout,kontakt.get_ID(),Long.parseLong(avtaleInp));
+                        String avtaleInp = avtaleId.getText().toString();
+                        if(!avtaleInp.isEmpty())
+                            leggtilKontaktTilAvtale(layout,kontakt.get_ID(),Long.parseLong(avtaleInp));
                     }
                 });
 
@@ -402,8 +421,17 @@ public class AvtaleActivity extends AppCompatActivity {
 
     }
     public void slettAvtale(LinearLayout layout) {
+        if(avtaleId.getText().toString().isEmpty())
+            return;
         dbHelperKontaktAvtale.fjernAlleKontaktFraAvtale(db,Long.parseLong(avtaleId.getText().toString()));
         dbHelperAvtale.slettAvtale(db,Long.parseLong(avtaleId.getText().toString()));
+        try{
+            getContentResolver().delete(CONTENT_AVTALE_URI,null, new String[]{avtaleId.getText().toString()});
+        }
+        catch (Exception ex){
+
+        }
+
         visalle(layout);
     }
 
@@ -674,6 +702,8 @@ public class AvtaleActivity extends AppCompatActivity {
         });
     }
     public void oppdater(LinearLayout layout) {
+        if(avtaleId.getText().toString().isEmpty())
+            return;
         Avtale avtale = new Avtale();
         String dato = datoInput.getText().toString();
         String tid = tidInput.getText().toString();
@@ -699,6 +729,19 @@ public class AvtaleActivity extends AppCompatActivity {
         avtale.setMelding(meldingInput.getText().toString());
         avtale.set_ID(Long.parseLong(avtaleId.getText().toString()));
         dbHelperAvtale.oppdaterAvtale(db, avtale);
+        try{
+            ContentValues v=new ContentValues();
+            v.put("_ID",Long.parseLong(avtaleId.getText().toString()));
+            v.put("tid",tidInput.getText().toString());
+            v.put("dato",datoInput.getText().toString());
+            v.put("melding",meldingInput.getText().toString());
+            getContentResolver().update(CONTENT_AVTALE_URI,v,null, new String[]{avtaleId.getText().toString()});
+
+        }
+        catch (Exception ex){
+
+        }
+
         visalle(layout);
     }
     @Override

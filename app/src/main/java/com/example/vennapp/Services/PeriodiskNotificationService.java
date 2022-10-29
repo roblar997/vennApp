@@ -42,7 +42,7 @@ public class PeriodiskNotificationService extends Service {
         calendar.set(Calendar.HOUR_OF_DAY, localTime.getHour());
         calendar.set(Calendar.MINUTE, localTime.getMinute());
 
-            alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60 * 1000, pintent);
+            alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pintent);
 
         return super.onStartCommand(intent, flags, startId);}
 }
