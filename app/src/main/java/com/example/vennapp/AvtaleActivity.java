@@ -426,7 +426,7 @@ public class AvtaleActivity extends AppCompatActivity {
         dbHelperKontaktAvtale.fjernAlleKontaktFraAvtale(db,Long.parseLong(avtaleId.getText().toString()));
         dbHelperAvtale.slettAvtale(db,Long.parseLong(avtaleId.getText().toString()));
         try{
-            getContentResolver().delete(CONTENT_AVTALE_URI,null, new String[]{avtaleId.getText().toString()});
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()),null, new String[]{avtaleId.getText().toString()});
         }
         catch (Exception ex){
 
@@ -735,7 +735,7 @@ public class AvtaleActivity extends AppCompatActivity {
             v.put("tid",tidInput.getText().toString());
             v.put("dato",datoInput.getText().toString());
             v.put("melding",meldingInput.getText().toString());
-            getContentResolver().update(CONTENT_AVTALE_URI,v,null, new String[]{avtaleId.getText().toString()});
+            getContentResolver().update(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()) ,v,null, null);
 
         }
         catch (Exception ex){
