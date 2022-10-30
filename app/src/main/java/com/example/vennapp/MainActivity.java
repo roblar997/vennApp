@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     EditText friendId;
     EditText telefonInput;
     LinearLayout message;
-    String CHANNEL_ID = "MinKanal";
+    String CHANNEL_ID = "MinKanal3";
 
 
     DBHandlerKontakt dbHelper;

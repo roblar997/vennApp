@@ -57,7 +57,7 @@ public class NotifictionSendService extends Service {
         } catch (PendingIntent.CanceledException e) {
             e.printStackTrace();
         }
-        Notification notifikasjon = new NotificationCompat.Builder(this,"MinKanal")
+        Notification notifikasjon = new NotificationCompat.Builder(this,"MinKanal3")
                 .setContentTitle("Snart avtale")
                 .setContentText("Er snart en avtale")
                 .setSmallIcon(R.mipmap.ic_launcher)

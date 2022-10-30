@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.vennapp.database.models.Avtale;
-import com.example.vennapp.database.models.Kontakt;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,6 +45,7 @@ public class DBHandlerAvtale extends SQLiteOpenHelper {
         db.execSQL(LAG_TABELL);
     }
     public void slettAvtale(SQLiteDatabase db, Long inn_id) {
+        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
         db.delete(TABLE_AVTALER , KEY_ID + " =? ",
                 new String[]{Long.toString(inn_id)});
     }
@@ -61,6 +61,7 @@ public class DBHandlerAvtale extends SQLiteOpenHelper {
         return 1L;
     }
     public List<Avtale> finnAlleAvtalerMedGittDato(SQLiteDatabase db,String date) {
+        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
         List<Avtale> avtaleListe = new ArrayList<Avtale>();
         String selectQuery = "SELECT * FROM " + TABLE_AVTALER + " t1 WHERE t1.Dato='" + date+"'";
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -79,10 +80,12 @@ public class DBHandlerAvtale extends SQLiteOpenHelper {
         return avtaleListe;
     }
     public List<Avtale> finnAlleAvtalerMedGittDato(SQLiteDatabase db, java.sql.Date date) {
-       return finnAlleAvtalerMedGittDato(db,date.toString());
+        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
+        return finnAlleAvtalerMedGittDato(db,date.toString());
 
     }
     public List<Avtale> finnAlleAvtaler(SQLiteDatabase db) {
+        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
         List<Avtale> avtaleListe = new ArrayList<Avtale>();
         String selectQuery = "SELECT * FROM " + TABLE_AVTALER;
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -103,14 +106,20 @@ public class DBHandlerAvtale extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_AVTALER );
-        onCreate(db);
+
     }
 
     public void leggTilAvtale(SQLiteDatabase db, Avtale avtale) {
+        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
         ContentValues values = new ContentValues();
         values.put(KEY_DATO,  avtale.getDato());
         values.put(KEY_TID, avtale.getTid());
         values.put(KEY_MELDING, avtale.getMelding());
         db.insert(TABLE_AVTALER , null, values);
+    }
+    @Override
+    public void close() {
+        super.close();
+
     }
 }

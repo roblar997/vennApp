@@ -50,14 +50,15 @@ public class DBHandlerKontakt extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_KONTAKTER );
-        onCreate(db);
+
     }
     public void slettKontakt(SQLiteDatabase db, Long inn_id) {
+        onCreate(db); //Unngå sjeldne bugs, at tabellen ikke finnes
         db.delete(TABLE_KONTAKTER , KEY_ID + " =? ",
                 new String[]{Long.toString(inn_id)});
     }
     public List<Kontakt> finnAlleKontakter(SQLiteDatabase db) {
-
+        onCreate(db);
         List<Kontakt> kontaktListe = new ArrayList<Kontakt>();
         String selectQuery = "SELECT * FROM " + TABLE_KONTAKTER;
         Log.d("SQL", selectQuery);
@@ -76,6 +77,7 @@ public class DBHandlerKontakt extends SQLiteOpenHelper {
         return kontaktListe;
     }
     public int oppdaterKontakt(SQLiteDatabase db, Kontakt kontakt) {
+        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
         ContentValues values = new ContentValues();
         values.put(KEY_FORNAVN, kontakt.getFornavn());
         values.put(KEY_ETTERNAVN, kontakt.getEtternavn());
@@ -85,6 +87,8 @@ public class DBHandlerKontakt extends SQLiteOpenHelper {
         return endret;
     }
     public void leggTilKontakt(SQLiteDatabase db, Kontakt kontakt) {
+
+        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
         ContentValues values = new ContentValues();
         values.put(KEY_ID,  kontakt.get_ID());
         values.put(KEY_FORNAVN,  kontakt.getFornavn());

@@ -116,7 +116,7 @@ public class AvtaleProvider extends ContentProvider {
             return 1;
         }
         if (uriMatcher.match(uri) == MAVTALE) {
-            db.delete(TABLE_SHARED_AVTALER, null, null);
+           db.delete(TABLE_SHARED_AVTALER, null, null);
             getContext().getContentResolver().notifyChange(uri, null);
             return 2;
         }

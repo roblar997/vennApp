@@ -111,8 +111,8 @@ public class KontaktProvider extends ContentProvider {
             return 1;
         }
         if (uriMatcher.match(uri) == MKONTAKT) {
-            //db.delete(TABLE_SHARED_KONTAKTER, null, null);
-           // getContext().getContentResolver().notifyChange(uri, null);
+            db.delete(TABLE_SHARED_KONTAKTER, null, null);
+            getContext().getContentResolver().notifyChange(uri, null);
             return 2;
         }
         return 0;

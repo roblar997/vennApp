@@ -78,7 +78,6 @@ public class SmsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         SendSMS();
         Intent mainIntentHome= new Intent(SmsActivity.this, MainActivity.class);
         startActivity(mainIntentHome);
