@@ -329,7 +329,7 @@ public class KontaktActivity extends AppCompatActivity {
             v.put("Fornavn",fornavnInput.getText().toString());
             v.put("Etternavn",etternavnInput.getText().toString());
             v.put("Telefon",telefonInput.getText().toString());
-            getContentResolver().update(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/"+friendId.getText().toString()),v,null, null);
+            getContentResolver().update(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/"+friendId.getText().toString()),v,null, new String[]{friendId.getText().toString()});
 
         }
         catch (Exception ex){

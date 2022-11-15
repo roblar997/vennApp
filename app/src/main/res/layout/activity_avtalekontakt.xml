@@ -19,7 +19,7 @@
                 android:id="@+id/avtaleLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="AVTALE"
+                android:text="KONTAKTER FOR DENNE AVTALE"
                 android:textSize="32sp" />
 
             <EditText
@@ -95,42 +95,18 @@
                 android:inputType="textPersonName" />
 
             <Button
-                android:id="@+id/leggTilBtn"
-                style="none"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#8BC34A"
-                android:text="Legg til"
-                android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/slettBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#BF2519"
-                android:text="Slett"
-                android:textColor="#FFFFFF" />
-            <Button
-                android:id="@+id/oppdaterBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#DCAB1A"
-                android:text="Oppdater"
-                android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/visalleBtn"
+                android:id="@+id/kontaktmedDenneAvtaleBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#1D6281"
-                android:text="VIS ALLE AVTALER" />
+                android:text="VIS KONTAKTER MED DENNE AVTALE" />
 
             <Button
                 android:id="@+id/visalleKontakterBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#1D6281"
-                android:text="LEGG TIL KONTAKTER" />
+                android:text="VIS ALLE KONTAKTER" />
 
             <ScrollView
                 android:id="@+id/ScrollView"

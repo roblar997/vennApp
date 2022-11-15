@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
-import android.util.Patterns;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
@@ -32,13 +31,12 @@ import com.example.vennapp.database.DBHandlerKontakt;
 import com.example.vennapp.database.DBHandlerKontaktAvtale;
 import com.example.vennapp.database.models.Avtale;
 import com.example.vennapp.database.models.Kontakt;
-import com.example.vennapp.database.models.KontaktAvtale;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AvtaleActivity extends AppCompatActivity {
+public class KontaktListActivity extends AppCompatActivity {
     EditText tidInput;
     EditText datoInput;
     TextView timeError;
@@ -448,15 +446,15 @@ public class AvtaleActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent mainIntent2= new Intent(AvtaleActivity.this, MainActivity.class);
+                Intent mainIntent2= new Intent(KontaktListActivity.this, MainActivity.class);
                 startActivity(mainIntent2);
                 return true;
             case R.id.home:
-                Intent mainIntentHome= new Intent(AvtaleActivity.this, MainActivity.class);
+                Intent mainIntentHome= new Intent(KontaktListActivity.this, MainActivity.class);
                 startActivity(mainIntentHome);
                 return true;
             case R.id.kontakt:
-                Intent kontaktIntent = new Intent(AvtaleActivity.this, KontaktActivity.class);
+                Intent kontaktIntent = new Intent(KontaktListActivity.this, KontaktActivity.class);
                 startActivity(kontaktIntent);
                 return true;
 
@@ -486,7 +484,7 @@ public class AvtaleActivity extends AppCompatActivity {
         Button oppdaterBtn =  findViewById(R.id.oppdaterBtn);
         Button slettBtn =  findViewById(R.id.slettBtn);
         Button visalleKontakterBtn =  findViewById(R.id.visalleKontakterBtn);
-
+        Button kontaktmedDenneAvtaleBtn =  findViewById(R.id.kontaktmedDenneAvtaleBtn);
         Button visalleBtn =  findViewById(R.id.visalleBtn);
         avtaleId = (EditText) findViewById(R.id.avtaleId);
         message = (LinearLayout) findViewById(R.id.message);
@@ -522,17 +520,27 @@ public class AvtaleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String avtaleInp = avtaleId.getText().toString();
-                Intent mainIntent2= new Intent(AvtaleActivity.this, AvtaleKontaktActivity.class);
-                mainIntent2.putExtra("avtaleId",avtaleId.getText().toString());
-                mainIntent2.putExtra("dato",datoInput.getText().toString());
-                mainIntent2.putExtra("tid",tidInput.getText().toString());
-                mainIntent2.putExtra("melding",meldingInput.getText().toString());
+                Intent mainIntent2= new Intent(KontaktListActivity.this, AvtaleKontaktActivity.class);
+                mainIntent2.putExtra("avtaleId","1");
+                mainIntent2.putExtra("dato","3");
+                mainIntent2.putExtra("tid","3");
+                mainIntent2.putExtra("melding","5");
                 startActivity(mainIntent2);
 
 
             }
         });
+        kontaktmedDenneAvtaleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String avtaleInp = avtaleId.getText().toString();
+                if(!avtaleInp.isEmpty()){
+                    Intent mainIntentHome= new Intent(KontaktListActivity.this, AvtaleKontaktActivity.class);
+                    startActivity(mainIntentHome);
+                }
 
+            }
+        });
     }
     public void oppdater(LinearLayout layout) {
         if(avtaleId.getText().toString().isEmpty())

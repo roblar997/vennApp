@@ -24,6 +24,7 @@ import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -38,7 +39,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AvtaleActivity extends AppCompatActivity {
+public class AvtaleKontaktActivity extends AppCompatActivity {
     EditText tidInput;
     EditText datoInput;
     TextView timeError;
@@ -91,7 +92,172 @@ public class AvtaleActivity extends AppCompatActivity {
 
     }
 
+    public void fjernKontaktFraAvtale(LinearLayout layout, Long kontaktID, Long avtaleId) {
+        KontaktAvtale kontaktAvtale = new KontaktAvtale(kontaktID,avtaleId);
+        dbHelperKontaktAvtale.fjernKontaktFraAvtale(db,kontaktAvtale);
 
+        visalle(layout);
+    }
+    public void visalleKontakterMedAvtale(LinearLayout layout, Long avtaleIdInput) {
+        layout.removeAllViews();
+        String tekst = "";
+        try {
+            TextView tittelTekst= new TextView(this);
+            tittelTekst.setText("MINE KONTAKTER MED DENNE AVTALE");
+
+            tittelTekst.setTextColor(Color.BLACK);
+            tittelTekst.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
+            tittelTekst.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+            ));
+
+            layout.addView(tittelTekst);
+            List<Kontakt> kontakter = dbHelperKontaktAvtale.finnAlleKontakterGittAvtale(db,avtaleIdInput);
+            for (Kontakt kontakt : kontakter) {
+
+                CardView cardView = new CardView(this);
+                cardView.setBackgroundColor(Color.BLACK);
+
+                cardView.setContentPadding(10,10,10,10);
+
+                Space space = new Space(this);
+                space.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                ));
+                space.setMinimumHeight(10);
+                LinearLayout layoutet = new LinearLayout(this);
+                layoutet.setOrientation(LinearLayout.VERTICAL);
+
+                layoutet.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                ));
+                TextView textTittel= new TextView(this);
+                textTittel.setText("KONTAKT");
+                textTittel.setBackgroundColor(Color.BLACK);
+                textTittel.setTextColor(Color.WHITE);
+                textTittel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
+                textTittel.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                ));
+
+                TextView textFornavn = new TextView(this);
+                SpannableString spannableStringFornavn = new SpannableString("Fornavn: " + kontakt.getFornavn());
+
+                spannableStringFornavn.setSpan(new StyleSpan(Typeface.BOLD), 0, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                textFornavn.setText(spannableStringFornavn);
+
+                textFornavn.setBackgroundColor(Color.WHITE);
+                textFornavn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                textFornavn.setTextColor(Color.BLACK);
+
+                textFornavn.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                ));
+
+                SpannableString spannableStringEtternavn = new SpannableString("Etternavn: " + kontakt.getEtternavn());
+
+                spannableStringEtternavn.setSpan(new StyleSpan(Typeface.BOLD), 0, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+                TextView textEtternavn = new TextView(this);
+                textEtternavn.setText(spannableStringEtternavn);
+                textEtternavn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+                textEtternavn.setTextColor(Color.BLACK);
+                textEtternavn.setBackgroundColor(Color.WHITE);
+                textEtternavn.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                ));
+
+                TextView textTelefon = new TextView(this);
+
+                SpannableString spannableStringTelefon = new SpannableString("Telefon: " + kontakt.getTelefonNummer());
+
+                spannableStringTelefon.setSpan(new StyleSpan(Typeface.BOLD), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                textTelefon.setText(spannableStringTelefon);
+                textTelefon.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+
+                textTelefon.setTextColor(Color.BLACK);
+                textTelefon.setBackgroundColor(Color.WHITE);
+                textTelefon.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                ));
+
+                Button slett = new Button(this);
+
+                slett.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                ));
+                LinearLayout layoutetBtn = new LinearLayout(this);
+                layoutetBtn.setOrientation(LinearLayout.HORIZONTAL);
+                layoutetBtn.setGravity(Gravity.RIGHT);
+                layoutetBtn.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                ));
+                Space space1 = new Space(this);
+                space1.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                ));
+                Space space2 = new Space(this);
+                space2.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                ));
+                space.setMinimumHeight(10);
+                space1.setMinimumWidth(5);
+                space2.setMinimumWidth(5);
+
+                slett.setWidth(80);
+
+                slett.setText("Slett");
+                slett.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                ));
+                layoutetBtn.setBackgroundColor(Color.WHITE);
+
+                slett.setBackgroundColor(Color.parseColor("#BF2519"));
+                slett.setTextColor(Color.WHITE);
+
+                slett.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        fjernKontaktFraAvtale(layout,kontakt.get_ID(),avtaleIdInput);
+                        visalleKontakterMedAvtale(layout,avtaleIdInput);
+                    }
+                });
+
+                layoutet.addView(textTittel);
+                layoutet.addView(textFornavn);
+                layoutet.addView(textEtternavn);
+                layoutet.addView(textTelefon);
+
+                layoutetBtn.addView(space2);
+                layoutetBtn.addView(slett);
+                layoutetBtn.addView(space1);
+                layoutet.addView(layoutetBtn);
+                cardView.addView(layoutet);
+
+                layout.addView(space);
+                layout.addView(cardView);
+            }
+
+        }
+        catch (Exception ex){
+
+        }
+
+    }
     public void visalleKontakter(LinearLayout layout) {
         layout.removeAllViews();
         String tekst = "";
@@ -199,9 +365,8 @@ public class AvtaleActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         String avtaleInp = avtaleId.getText().toString();
-                        if(!avtaleInp.isEmpty()){
-
-                        }
+                        if(!avtaleInp.isEmpty())
+                            leggtilKontaktTilAvtale(layout,kontakt.get_ID(),Long.parseLong(avtaleInp));
                     }
                 });
 
@@ -256,20 +421,6 @@ public class AvtaleActivity extends AppCompatActivity {
 
 
     }
-    public void slettAvtale(LinearLayout layout) {
-        if(avtaleId.getText().toString().isEmpty())
-            return;
-        dbHelperKontaktAvtale.fjernAlleKontaktFraAvtale(db,Long.parseLong(avtaleId.getText().toString()));
-        dbHelperAvtale.slettAvtale(db,Long.parseLong(avtaleId.getText().toString()));
-        try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()),null, new String[]{avtaleId.getText().toString()});
-        }
-        catch (Exception ex){
-
-        }
-
-        visalle(layout);
-    }
 
 
     @Override
@@ -277,7 +428,12 @@ public class AvtaleActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater(); inflater.inflate(R.menu.menu, menu);
         return true;
     }
+    public void leggtilKontaktTilAvtale(LinearLayout layout, Long kontaktId, Long avtaleId) {
+        KontaktAvtale kontaktavtale = new KontaktAvtale(kontaktId,avtaleId);
+        dbHelperKontaktAvtale.leggTilKontaktTilAvtale(db,kontaktavtale);
 
+        visalleKontakterMedAvtale(layout,avtaleId);
+    }
     public void visalle(LinearLayout layout) {
         layout.removeAllViews();
         String tekst = "";
@@ -444,31 +600,14 @@ public class AvtaleActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent mainIntent2= new Intent(AvtaleActivity.this, MainActivity.class);
-                startActivity(mainIntent2);
-                return true;
-            case R.id.home:
-                Intent mainIntentHome= new Intent(AvtaleActivity.this, MainActivity.class);
-                startActivity(mainIntentHome);
-                return true;
-            case R.id.kontakt:
-                Intent kontaktIntent = new Intent(AvtaleActivity.this, KontaktActivity.class);
-                startActivity(kontaktIntent);
-                return true;
-
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_avtale);
+
+
+
+        setContentView(R.layout.activity_avtalekontakt);
 
         dbHelperAvtale = new DBHandlerAvtale(this);
         db=dbHelperAvtale.getWritableDatabase();
@@ -482,100 +621,57 @@ public class AvtaleActivity extends AppCompatActivity {
         datoInput = (EditText) findViewById(R.id.datoInput);
         tidInput = (EditText) findViewById(R.id.tidInput);
         meldingInput = (EditText) findViewById(R.id.meldingInput);
-        Button leggTilBtn =  findViewById(R.id.leggTilBtn);
-        Button oppdaterBtn =  findViewById(R.id.oppdaterBtn);
-        Button slettBtn =  findViewById(R.id.slettBtn);
-        Button visalleKontakterBtn =  findViewById(R.id.visalleKontakterBtn);
 
-        Button visalleBtn =  findViewById(R.id.visalleBtn);
+        Button visalleKontakterBtn =  findViewById(R.id.visalleKontakterBtn);
+        Button kontaktmedDenneAvtaleBtn =  findViewById(R.id.kontaktmedDenneAvtaleBtn);
+        ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
         avtaleId = (EditText) findViewById(R.id.avtaleId);
         message = (LinearLayout) findViewById(R.id.message);
         dateError = (TextView) findViewById(R.id.dateError);
         timeError = (TextView) findViewById(R.id.timeError);
-        leggTilBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                leggtil(message);
-            }
-        });
-        slettBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        String avtaleIdText = getIntent().getStringExtra("avtaleId");
+        if(avtaleIdText != null)
+            avtaleId.setText(avtaleIdText);
 
-                slettAvtale(message);
-            }
-        });
-        oppdaterBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                oppdater(message);
-            }
-        });
-        visalleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                visalle(message);
-            }
-        });
+        String datoText = getIntent().getStringExtra("dato");
 
+        if(datoText != null )
+            datoInput.setText(datoText);
+
+        String tidText  = getIntent().getStringExtra("tid");
+        tidInput.setText(tidText);
+
+        String meldingText = getIntent().getStringExtra("melding");
+        meldingInput.setText(meldingText);
         visalleKontakterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String avtaleInp = avtaleId.getText().toString();
-                Intent mainIntent2= new Intent(AvtaleActivity.this, AvtaleKontaktActivity.class);
-                mainIntent2.putExtra("avtaleId",avtaleId.getText().toString());
-                mainIntent2.putExtra("dato",datoInput.getText().toString());
-                mainIntent2.putExtra("tid",tidInput.getText().toString());
-                mainIntent2.putExtra("melding",meldingInput.getText().toString());
-                startActivity(mainIntent2);
-
-
+                visalleKontakter(message);
             }
         });
-
+        kontaktmedDenneAvtaleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String avtaleInp = avtaleId.getText().toString();
+                if(!avtaleInp.isEmpty())
+                    visalleKontakterMedAvtale(message,Long.parseLong(avtaleInp));
+            }
+        });
     }
-    public void oppdater(LinearLayout layout) {
-        if(avtaleId.getText().toString().isEmpty())
-            return;
-        Avtale avtale = new Avtale();
-        String dato = datoInput.getText().toString();
-        String tid = tidInput.getText().toString();
-        Pattern patternDato = Pattern.compile( "^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
-        Matcher matcherDato = patternDato.matcher(dato);
-        boolean found = true;
-        if (!matcherDato.find()) {
-            dateError.setText("Må være formatert yyyy-MM-dd");
-            found = false;
-        }
-        Pattern patternTid = Pattern.compile( "^[0-9]{2}:[0-9]{2}:[0-9]{2}$");
-        Matcher matcherTid = patternTid.matcher(tid);
-        if (!matcherTid.find()) {
-            timeError.setText("Må være formatert HH:mm:ss");
-            found = false;
-        }
-        if(!found ){
-            return;
-        }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent mainIntent2= new Intent(AvtaleKontaktActivity.this, AvtaleActivity.class);
+                startActivity(mainIntent2);
+                return true;
 
-        avtale.setTid(tidInput.getText().toString());
-        avtale.setDato(datoInput.getText().toString());
-        avtale.setMelding(meldingInput.getText().toString());
-        avtale.set_ID(Long.parseLong(avtaleId.getText().toString()));
-        dbHelperAvtale.oppdaterAvtale(db, avtale);
-        try{
-            ContentValues v=new ContentValues();
-            v.put("_ID",Long.parseLong(avtaleId.getText().toString()));
-            v.put("tid",tidInput.getText().toString());
-            v.put("dato",datoInput.getText().toString());
-            v.put("melding",meldingInput.getText().toString());
-            getContentResolver().update(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()) ,v,null, null);
+
 
         }
-        catch (Exception ex){
-
-        }
-
-        visalle(layout);
+        return super.onOptionsItemSelected(item);
     }
     @Override
     protected void onDestroy() {
