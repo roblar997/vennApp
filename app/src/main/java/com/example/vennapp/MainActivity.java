@@ -309,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
         avtaleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent avtaleIntent = new Intent(MainActivity.this, AvtaleActivity.class);
+                Intent avtaleIntent = new Intent(MainActivity.this, AvtaleListActivity.class);
                 startActivity(avtaleIntent);
 
             }
@@ -332,7 +332,7 @@ public class MainActivity extends AppCompatActivity {
         kontaktBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent kontaktIntent = new Intent(MainActivity.this, KontaktActivity.class);
+                Intent kontaktIntent = new Intent(MainActivity.this, KontaktListActivity.class);
                 startActivity(kontaktIntent);
 
             }

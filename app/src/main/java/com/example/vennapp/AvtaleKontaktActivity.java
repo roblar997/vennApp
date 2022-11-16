@@ -665,6 +665,10 @@ public class AvtaleKontaktActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent mainIntent2= new Intent(AvtaleKontaktActivity.this, AvtaleActivity.class);
+                mainIntent2.putExtra("avtaleId",avtaleId.getText().toString());
+                mainIntent2.putExtra("dato",datoInput.getText().toString());
+                mainIntent2.putExtra("tid",tidInput.getText().toString());
+                mainIntent2.putExtra("melding",meldingInput.getText().toString());
                 startActivity(mainIntent2);
                 return true;
 

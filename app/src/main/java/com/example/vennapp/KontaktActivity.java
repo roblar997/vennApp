@@ -23,6 +23,7 @@ import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -279,14 +280,30 @@ public class KontaktActivity extends AppCompatActivity {
         Button leggTilBtn =  findViewById(R.id.leggTilBtn);
         Button oppdaterBtn =  findViewById(R.id.oppdaterBtn);
         Button slettBtn =  findViewById(R.id.slettBtn);
-        Button visalleBtn =  findViewById(R.id.visalleBtn);
+
         friendId = (EditText) findViewById(R.id.kontaktId);
         message = (LinearLayout) findViewById(R.id.message);
         dbHelper = new DBHandlerKontakt(this);
         db=dbHelper.getWritableDatabase();
+        ActionBar actionBar = getSupportActionBar();
 
+        actionBar.setDisplayHomeAsUpEnabled(true);
         dbHelperKontaktAvtale = new DBHandlerKontaktAvtale(this);
         db=dbHelperKontaktAvtale.getWritableDatabase();
+        String friendIdText = getIntent().getStringExtra("friendId");
+        if(friendId != null)
+            friendId.setText(friendIdText);
+
+        String telefonText = getIntent().getStringExtra("telefon");
+
+        if(telefonText != null )
+            telefonInput.setText(telefonText);
+
+        String fornavnText  = getIntent().getStringExtra("fornavn");
+        fornavnInput.setText(fornavnText);
+
+        String etternavnText = getIntent().getStringExtra("etternavn");
+        etternavnInput.setText(etternavnText);
 
         leggTilBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -306,12 +323,7 @@ public class KontaktActivity extends AppCompatActivity {
                 oppdater(message);
             }
         });
-        visalleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                visalle(message);
-            }
-        });
+
     }
     public void oppdater(LinearLayout layout) {
         if(friendId.getText().toString().isEmpty())

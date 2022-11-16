@@ -126,11 +126,11 @@
                 android:textColor="#FFFFFF" />
 
             <Button
-                android:id="@+id/visalleBtn"
+                android:id="@+id/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#1D6281"
-                android:text="VIS ALLE" />
+                android:text="RESET" />
 
             <ScrollView
                 android:id="@+id/ScrollView"

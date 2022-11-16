@@ -23,6 +23,7 @@ import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -254,11 +255,11 @@ public class AvtaleListActivity extends AppCompatActivity {
 
 
     }
-    public void slettAvtale(LinearLayout layout) {
-        if(avtaleId.getText().toString().isEmpty())
+    public void slettAvtale(String id) {
+        if(id == null || id.isEmpty())
             return;
-        dbHelperKontaktAvtale.fjernAlleKontaktFraAvtale(db,Long.parseLong(avtaleId.getText().toString()));
-        dbHelperAvtale.slettAvtale(db,Long.parseLong(avtaleId.getText().toString()));
+        dbHelperKontaktAvtale.fjernAlleKontaktFraAvtale(db,Long.parseLong(id));
+        dbHelperAvtale.slettAvtale(db,Long.parseLong(id));
         try{
             getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()),null, new String[]{avtaleId.getText().toString()});
         }
@@ -266,7 +267,7 @@ public class AvtaleListActivity extends AppCompatActivity {
 
         }
 
-        visalle(layout);
+        visalle(message);
     }
 
 
@@ -411,10 +412,33 @@ public class AvtaleListActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        avtaleId.setText(avtale.get_ID().toString());
-                        datoInput.setText(avtale.getDato());
-                        tidInput.setText(avtale.getTid());
-                        meldingInput.setText(avtale.getMelding());
+                        Intent mainIntent2= new Intent(AvtaleListActivity.this, AvtaleActivity.class);
+                        mainIntent2.putExtra("avtaleId",avtale.get_ID().toString());
+                        mainIntent2.putExtra("dato",avtale.getDato());
+                        mainIntent2.putExtra("tid",avtale.getTid());
+                        mainIntent2.putExtra("melding",avtale.getMelding());
+                        startActivity(mainIntent2);
+
+                    }
+                });
+                Button slett = new Button(this);
+                slett.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                ));
+                slett.setText("Slett");
+                
+                slett.setBackgroundColor(Color.parseColor("#BF2519"));
+                slett.setTextColor(Color.WHITE);
+                slett.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                ));
+                slett.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        slettAvtale(String.valueOf(avtale.get_ID()));
+
                     }
                 });
 
@@ -427,6 +451,7 @@ public class AvtaleListActivity extends AppCompatActivity {
                 layoutetBtn.addView(space2);
                 layoutetBtn.addView(velg);
                 layoutetBtn.addView(space1);
+                layoutetBtn.addView(slett);
                 layoutet.addView(layoutetBtn);
                 cardView.addView(layoutet);
 
@@ -466,7 +491,7 @@ public class AvtaleListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_avtale);
+        setContentView(R.layout.activity_avtalelist);
 
         dbHelperAvtale = new DBHandlerAvtale(this);
         db=dbHelperAvtale.getWritableDatabase();
@@ -477,59 +502,12 @@ public class AvtaleListActivity extends AppCompatActivity {
         dbHelperKontaktAvtale = new DBHandlerKontaktAvtale(this);
         db=dbHelperKontaktAvtale.getWritableDatabase();
 
-        datoInput = (EditText) findViewById(R.id.datoInput);
-        tidInput = (EditText) findViewById(R.id.tidInput);
-        meldingInput = (EditText) findViewById(R.id.meldingInput);
-        Button leggTilBtn =  findViewById(R.id.leggTilBtn);
-        Button oppdaterBtn =  findViewById(R.id.oppdaterBtn);
-        Button slettBtn =  findViewById(R.id.slettBtn);
-        Button visalleKontakterBtn =  findViewById(R.id.visalleKontakterBtn);
-
-        Button visalleBtn =  findViewById(R.id.visalleBtn);
-        avtaleId = (EditText) findViewById(R.id.avtaleId);
         message = (LinearLayout) findViewById(R.id.message);
-        dateError = (TextView) findViewById(R.id.dateError);
-        timeError = (TextView) findViewById(R.id.timeError);
-        leggTilBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                leggtil(message);
-            }
-        });
-        slettBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                slettAvtale(message);
-            }
-        });
-        oppdaterBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                oppdater(message);
-            }
-        });
-        visalleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                visalle(message);
-            }
-        });
+        ActionBar actionBar = getSupportActionBar();
 
-        visalleKontakterBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String avtaleInp = avtaleId.getText().toString();
-                Intent mainIntent2= new Intent(AvtaleListActivity.this, AvtaleKontaktActivity.class);
-                mainIntent2.putExtra("avtaleId",avtaleId.getText().toString());
-                mainIntent2.putExtra("dato",datoInput.getText().toString());
-                mainIntent2.putExtra("tid",tidInput.getText().toString());
-                mainIntent2.putExtra("melding",meldingInput.getText().toString());
-                startActivity(mainIntent2);
-
-
-            }
-        });
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        visalle(message);
 
     }
     public void oppdater(LinearLayout layout) {
