@@ -13,7 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/avtaleLabel"
@@ -47,7 +47,6 @@
                 android:textColor="#EA1212"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
             <EditText
                 android:id="@+id/datoInput"
                 android:layout_width="match_parent"
@@ -72,7 +71,6 @@
                 android:textColor="#E40404"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
             <EditText
                 android:id="@+id/tidInput"
                 android:layout_width="match_parent"
@@ -97,49 +95,13 @@
                 android:inputType="textPersonName" />
 
             <Button
-                android:id="@+id/oppdaterBtn"
+                android:id="@+id/leggTilBtn"
+                style="none"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#DCAB1A"
-                android:text="Oppdater"
+                android:backgroundTint="#8BC34A"
+                android:text="Legg til"
                 android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#1D6281"
-                android:text="RESET" />
-
-            <Button
-                android:id="@+id/visalleKontakterBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#1D6281"
-                android:text="LEGG TIL KONTAKTER" />
-
-            <ScrollView
-                android:id="@+id/ScrollView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/message"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:dividerPadding="22px"
-                    android:orientation="vertical"
-                    android:showDividers="middle|end" >
-
-                    <Button
-                        android:id="@+id/slettBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#BF2519"
-                        android:text="Slett"
-                        android:textColor="#FFFFFF" />
-                </LinearLayout>
-            </ScrollView>
 
 
         </LinearLayout>

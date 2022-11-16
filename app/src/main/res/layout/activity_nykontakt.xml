@@ -13,110 +13,101 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/avtaleLabel"
+                android:id="@+id/kontaktLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="AVTALE"
+                android:text="KONTAKT"
                 android:textSize="32sp" />
 
             <EditText
-                android:id="@+id/avtaleId"
+                android:id="@+id/kontaktId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:visibility="invisible"
                 tools:visibility="invisible" />
-
             <TextView
-                android:id="@+id/datoLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Dato (format yyyy-MM-dd) "
-                android:textStyle="bold"
-                tools:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/dateError"
+                android:id="@+id/telefonError"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="#EA1212"
                 android:textSize="16sp"
                 android:textStyle="bold" />
+            <TextView
+                android:id="@+id/telefonLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Telefon"
+                android:textStyle="bold"
+                tools:textSize="16sp" />
 
             <EditText
-                android:id="@+id/datoInput"
+                android:id="@+id/telefonInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="date"
+                android:inputType="phone"
                 android:minHeight="48dp" />
 
             <TextView
-                android:id="@+id/tidLabel"
+                android:id="@+id/fornavnLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tid (format HH:mm:ss) "
+                android:text="Fornavn"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
             <TextView
-                android:id="@+id/timeError"
+                android:id="@+id/fornavnError"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="#E40404"
+                android:textColor="#EA1212"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
             <EditText
-                android:id="@+id/tidInput"
+                android:id="@+id/fornavnInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="time"
+                android:inputType="textPersonName"
                 android:minHeight="48dp" />
 
             <TextView
-                android:id="@+id/meldingLabel"
+                android:id="@+id/etternavnLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Melding"
+                android:text="Etternavn"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
+            <TextView
+                android:id="@+id/etternavnError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#EA1212"
+                android:textSize="16sp"
+                android:textStyle="bold" />
             <EditText
-                android:id="@+id/meldingInput"
+                android:id="@+id/etternavnInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:minHeight="48dp" />
 
             <Button
-                android:id="@+id/oppdaterBtn"
+                android:id="@+id/leggTilBtn"
+                style="none"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#DCAB1A"
-                android:text="Oppdater"
+                android:backgroundTint="#8BC34A"
+                android:text="Legg til"
                 android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#1D6281"
-                android:text="RESET" />
-
-            <Button
-                android:id="@+id/visalleKontakterBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#1D6281"
-                android:text="LEGG TIL KONTAKTER" />
 
             <ScrollView
                 android:id="@+id/ScrollView"
@@ -129,19 +120,8 @@
                     android:layout_height="wrap_content"
                     android:dividerPadding="22px"
                     android:orientation="vertical"
-                    android:showDividers="middle|end" >
-
-                    <Button
-                        android:id="@+id/slettBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#BF2519"
-                        android:text="Slett"
-                        android:textColor="#FFFFFF" />
-                </LinearLayout>
+                    android:showDividers="middle|end" />
             </ScrollView>
-
-
         </LinearLayout>
     </ScrollView>
 

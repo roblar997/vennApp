@@ -101,23 +101,6 @@
                 android:minHeight="48dp" />
 
             <Button
-                android:id="@+id/leggTilBtn"
-                style="none"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#8BC34A"
-                android:text="Legg til"
-                android:textColor="#FFFFFF" />
-
-            <Button
-                android:id="@+id/slettBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#BF2519"
-                android:text="Slett"
-                android:textColor="#FFFFFF" />
-
-            <Button
                 android:id="@+id/oppdaterBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,7 +126,16 @@
                     android:layout_height="wrap_content"
                     android:dividerPadding="22px"
                     android:orientation="vertical"
-                    android:showDividers="middle|end" />
+                    android:showDividers="middle|end" >
+
+                    <Button
+                        android:id="@+id/slettBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#BF2519"
+                        android:text="Slett"
+                        android:textColor="#FFFFFF" />
+                </LinearLayout>
             </ScrollView>
         </LinearLayout>
     </ScrollView>

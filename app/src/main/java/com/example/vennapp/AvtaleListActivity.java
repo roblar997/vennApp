@@ -503,7 +503,15 @@ public class AvtaleListActivity extends AppCompatActivity {
         db=dbHelperKontaktAvtale.getWritableDatabase();
 
         message = (LinearLayout) findViewById(R.id.message);
+        Button nyAvtaleBtn =  findViewById(R.id.nyAvtale);
+        nyAvtaleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mainIntent2= new Intent(AvtaleListActivity.this, NyAvtaleActivity.class);
 
+                startActivity(mainIntent2);
+            }
+        });
         ActionBar actionBar = getSupportActionBar();
 
         actionBar.setDisplayHomeAsUpEnabled(true);

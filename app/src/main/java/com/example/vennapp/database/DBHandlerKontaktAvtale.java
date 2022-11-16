@@ -55,23 +55,23 @@ public class DBHandlerKontaktAvtale extends SQLiteOpenHelper {
         db.execSQL(LAG_TABELL);
     }
     public void fjernKontaktFraAvtale(SQLiteDatabase db, KontaktAvtale avtaleKontakt) {
-        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
+
         db.delete(TABLE_KONTAKTAVTALE , KEY_ID1 + " =? AND " + KEY_ID2 + "=?",
                 new String[]{Long.toString(avtaleKontakt.getKontaktId()),Long.toString(avtaleKontakt.getAvtaleId()) });
     }
     public void fjernAlleKontaktFraAvtale(SQLiteDatabase db, Long avtaleId) {
-        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
+
         db.delete(TABLE_KONTAKTAVTALE , KEY_ID2 + " =?",
                 new String[]{Long.toString(avtaleId) });
     }
     public void fjernAlleAvtalerFraKontakt(SQLiteDatabase db, Long kontaktId) {
-        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
+
         db.delete(TABLE_KONTAKTAVTALE , KEY_ID1 + " =?",
                 new String[]{Long.toString(kontaktId) });
     }
     public List<Kontakt> finnAlleKontakterGittAvtale(SQLiteDatabase db, Long avtaleIdInn) {
 
-        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
+
         List<Kontakt> kontaktListe = new ArrayList<Kontakt>();
         String selectQuery = "SELECT t2._ID," + KEY_FORNAVN + ","+ KEY_ETTERNAVN + "," + KEY_TELEFON +" FROM " +  TABLE_KONTAKTAVTALE  + " t1 INNER JOIN " + KEY_REF_TABLE1 + " t2 ON t1." + KEY_ID1 + " =t2._ID WHERE t1." + KEY_ID2 + "= " + avtaleIdInn.toString();
         Cursor cursor = db.rawQuery(selectQuery, null);

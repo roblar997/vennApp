@@ -304,7 +304,15 @@ public class KontaktListActivity extends AppCompatActivity {
 
         dbHelper = new DBHandlerKontakt(this);
         db=dbHelper.getWritableDatabase();
+        Button nyKontaktBtn =  findViewById(R.id.nyKontakt);
+        nyKontaktBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mainIntent2= new Intent(KontaktListActivity.this, NyKontaktActivity.class);
 
+                startActivity(mainIntent2);
+            }
+        });
         dbHelperKontaktAvtale = new DBHandlerKontaktAvtale(this);
         db=dbHelperKontaktAvtale.getWritableDatabase();
         visalle(message);

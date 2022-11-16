@@ -277,7 +277,7 @@ public class KontaktActivity extends AppCompatActivity {
         fornavnInput = (EditText) findViewById(R.id.fornavnInput);
         etternavnInput = (EditText) findViewById(R.id.etternavnInput);
         telefonInput = (EditText) findViewById(R.id.telefonInput);
-        Button leggTilBtn =  findViewById(R.id.leggTilBtn);
+
         Button oppdaterBtn =  findViewById(R.id.oppdaterBtn);
         Button slettBtn =  findViewById(R.id.slettBtn);
 
@@ -305,12 +305,7 @@ public class KontaktActivity extends AppCompatActivity {
         String etternavnText = getIntent().getStringExtra("etternavn");
         etternavnInput.setText(etternavnText);
 
-        leggTilBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                leggtil(message);
-            }
-        });
+
         slettBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

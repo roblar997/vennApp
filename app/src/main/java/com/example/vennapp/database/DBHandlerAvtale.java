@@ -45,7 +45,7 @@ public class DBHandlerAvtale extends SQLiteOpenHelper {
         db.execSQL(LAG_TABELL);
     }
     public void slettAvtale(SQLiteDatabase db, Long inn_id) {
-        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
+
         db.delete(TABLE_AVTALER , KEY_ID + " =? ",
                 new String[]{Long.toString(inn_id)});
     }
@@ -61,7 +61,7 @@ public class DBHandlerAvtale extends SQLiteOpenHelper {
         return 1L;
     }
     public List<Avtale> finnAlleAvtalerMedGittDato(SQLiteDatabase db,String date) {
-        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
+
         List<Avtale> avtaleListe = new ArrayList<Avtale>();
         String selectQuery = "SELECT * FROM " + TABLE_AVTALER + " t1 WHERE t1.Dato='" + date+"'";
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -80,12 +80,12 @@ public class DBHandlerAvtale extends SQLiteOpenHelper {
         return avtaleListe;
     }
     public List<Avtale> finnAlleAvtalerMedGittDato(SQLiteDatabase db, java.sql.Date date) {
-        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
+
         return finnAlleAvtalerMedGittDato(db,date.toString());
 
     }
     public List<Avtale> finnAlleAvtaler(SQLiteDatabase db) {
-        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
+
         List<Avtale> avtaleListe = new ArrayList<Avtale>();
         String selectQuery = "SELECT * FROM " + TABLE_AVTALER;
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -110,7 +110,6 @@ public class DBHandlerAvtale extends SQLiteOpenHelper {
     }
 
     public void leggTilAvtale(SQLiteDatabase db, Avtale avtale) {
-        onCreate(db);//Unngå sjeldne bugs, at tabellen ikke finnes
         ContentValues values = new ContentValues();
         values.put(KEY_DATO,  avtale.getDato());
         values.put(KEY_TID, avtale.getTid());
