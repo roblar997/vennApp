@@ -1,2 +1,1 @@
-Status: legger ut lag ny kontakt og lag ny avtale i egen aktiviet
-![image](https://user-images.githubusercontent.com/78033443/202188280-a7969cf9-5b6c-4a65-90b6-fa7c92f288ca.png)
+![image](https://user-images.githubusercontent.com/78033443/202218838-c794dca7-4fc4-4d6c-bc6c-7212cb66df3e.png)
