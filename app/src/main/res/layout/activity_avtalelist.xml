@@ -10,7 +10,7 @@
         android:id="@+id/nyAvtale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#8BC34A"
+        android:backgroundTint="#1D6281"
         android:text="NY AVTALE"
         android:textColor="#FFFFFF" />
 
