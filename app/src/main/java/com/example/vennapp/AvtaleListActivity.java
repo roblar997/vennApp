@@ -62,7 +62,7 @@ public class AvtaleListActivity extends AppCompatActivity {
         dbHelperKontaktAvtale.fjernAlleKontaktFraAvtale(db,Long.parseLong(id));
         dbHelperAvtale.slettAvtale(db,Long.parseLong(id));
         try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+id),null, new String[]{"_ID"});
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+id),null, new String[]{id});
         }
         catch (Exception ex){
 

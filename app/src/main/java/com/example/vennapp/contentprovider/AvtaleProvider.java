@@ -97,7 +97,7 @@ public class AvtaleProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         if (uriMatcher.match(uri) == AVTALE) {
-            db.update(TABLE_SHARED_AVTALER, values, _ID + " = " + uri.getPathSegments().get(1), null);
+            db.update(TABLE_SHARED_AVTALER, values, _ID + " = " + Long.parseLong(uri.getPathSegments().get(1)),null);
             getContext().getContentResolver().notifyChange(uri, null);
             return 1;
         }
@@ -108,10 +108,12 @@ public class AvtaleProvider extends ContentProvider {
         }
         return 0;
     }
+
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         if (uriMatcher.match(uri) == AVTALE) {
-            db.delete(TABLE_SHARED_AVTALER, _ID + " = " + uri.getPathSegments().get(1), selectionArgs);
+            String[] selectionArguments = new String[]{uri.getPathSegments().get(1)};
+            db.delete(TABLE_SHARED_AVTALER, _ID + " = ? ", selectionArguments);
             getContext().getContentResolver().notifyChange(uri, null);
             return 1;
         }

@@ -107,7 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#1D6281"
-                android:text="VIS ALLE KONTAKTER" />
+                android:text="VIS ALLE KONTAKTER UTEN DENNE AVTALE" />
 
             <ScrollView
                 android:id="@+id/ScrollView"

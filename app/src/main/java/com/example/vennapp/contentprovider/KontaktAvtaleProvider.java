@@ -65,6 +65,7 @@ public class KontaktAvtaleProvider extends ContentProvider {
         db = DBhelper.getWritableDatabase();
         return true;
     }
+
     @Override
     public String getType(Uri uri) {
         switch (uriMatcher.match(uri)) {
@@ -113,7 +114,8 @@ public class KontaktAvtaleProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         if (uriMatcher.match(uri) == KONTAKTAVTALE) {
-            db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = " + uri.getPathSegments().get(1) + " AND " + KEY_ID2 + " = " + uri.getPathSegments().get(2), selectionArgs);
+            String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0],uri.getPathSegments().get(1).split("-")[1]};
+            db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ?  AND " + KEY_ID2 + " = ?", selectionArguments);
             getContext().getContentResolver().notifyChange(uri, null);
             return 1;
         }

@@ -38,6 +38,7 @@ import com.example.vennapp.database.models.KontaktAvtale;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class AvtaleKontaktActivity extends AppCompatActivity {
     EditText tidInput;
@@ -57,11 +58,11 @@ public class AvtaleKontaktActivity extends AppCompatActivity {
     SQLiteDatabase db;
 
 
-    public void fjernKontaktFraAvtale(LinearLayout layout, Long kontaktID, Long avtaleId) {
-        KontaktAvtale kontaktAvtale = new KontaktAvtale(kontaktID,avtaleId);
+    public void fjernKontaktFraAvtale(LinearLayout layout, Long kontaktId, Long avtaleId) {
+        KontaktAvtale kontaktAvtale = new KontaktAvtale(kontaktId,avtaleId);
         dbHelperKontaktAvtale.fjernKontaktFraAvtale(db,kontaktAvtale);
         try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/avtale/"+String.valueOf(kontaktID)+"/"+String.valueOf(avtaleId)),null, new String[]{"kontaktId","avtaleId"});
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale/" + String.valueOf(kontaktId)+"-"+String.valueOf(avtaleId)),null, new String[]{String.valueOf(kontaktId),String.valueOf(avtaleId)});
         }
         catch (Exception ex){
 
@@ -228,7 +229,7 @@ public class AvtaleKontaktActivity extends AppCompatActivity {
         }
 
     }
-    public void visalleKontakter(LinearLayout layout) {
+    public void visalleKontakterUtenAvtale(LinearLayout layout) {
         layout.removeAllViews();
         String tekst = "";
         try {
@@ -244,7 +245,9 @@ public class AvtaleKontaktActivity extends AppCompatActivity {
 
             layout.addView(tittelTekst);
             List<Kontakt> kontakter = dbHelperKontakt.finnAlleKontakter(db);
-            for (Kontakt kontakt : kontakter) {
+            List<Kontakt> kontaktMedAvtale = dbHelperKontaktAvtale.finnAlleKontakterGittAvtale(db,Long.parseLong(avtaleId.getText().toString()));
+            List<Kontakt> kontaktUtenAvtale = kontakter.stream().filter(element -> !kontaktMedAvtale.contains(element)).collect(Collectors.toList());
+            for (Kontakt kontakt : kontaktUtenAvtale) {
 
                 CardView cardView = new CardView(this);
                 cardView.setBackgroundColor(Color.BLACK);
@@ -403,7 +406,7 @@ public class AvtaleKontaktActivity extends AppCompatActivity {
         dbHelperKontaktAvtale.leggTilKontaktTilAvtale(db,kontaktavtale);
         //Prøv å legg til
         try{
-            Long id = dbHelperAvtale.getMaxId(db);
+
             ContentValues v=new ContentValues();
             v.put("kontaktId",String.valueOf(kontaktId));
             v.put("avtaleId",String.valueOf(avtaleId));
@@ -630,7 +633,7 @@ public class AvtaleKontaktActivity extends AppCompatActivity {
         visalleKontakterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                visalleKontakter(message);
+                visalleKontakterUtenAvtale(message);
             }
         });
         kontaktmedDenneAvtaleBtn.setOnClickListener(new View.OnClickListener() {

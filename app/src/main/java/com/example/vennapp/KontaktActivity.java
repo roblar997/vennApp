@@ -55,7 +55,7 @@ public class KontaktActivity extends AppCompatActivity {
         dbHelper.slettKontakt(db,kontaktid);
 
         try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/"+friendId.getText().toString()),null, new String[]{"_ID"});
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/"+friendId.getText().toString()),null, new String[]{friendId.getText().toString()});
 
         }
         catch (Exception ex){
@@ -152,11 +152,11 @@ public class KontaktActivity extends AppCompatActivity {
         dbHelper.oppdaterKontakt(db, kontakt);
         ContentValues v=new ContentValues();
         try{
-            v.put("_ID",Long.parseLong(friendId.getText().toString()));
+            v.put("_id",Long.parseLong(friendId.getText().toString()));
             v.put("Fornavn",fornavnInput.getText().toString());
             v.put("Etternavn",etternavnInput.getText().toString());
             v.put("Telefon",telefonInput.getText().toString());
-            getContentResolver().update(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/"+friendId.getText().toString()),v,null, new String[]{"_ID"});
+            getContentResolver().update(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/" + friendId.getText().toString()),v,null,null);
 
         }
         catch (Exception ex){

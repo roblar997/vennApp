@@ -1,5 +1,7 @@
 package com.example.vennapp.database.models;
 
+import java.util.Objects;
+
 public class Kontakt {
     private Long _ID;
     private String fornavn;
@@ -7,6 +9,19 @@ public class Kontakt {
     private String telefonNummer;
     public Kontakt() {
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Kontakt kontakt = (Kontakt) o;
+        return Objects.equals(_ID, kontakt._ID) && Objects.equals(fornavn, kontakt.fornavn) && Objects.equals(etternavn, kontakt.etternavn) && Objects.equals(telefonNummer, kontakt.telefonNummer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(_ID, fornavn, etternavn, telefonNummer);
     }
 
     public Kontakt(String fornavn, String etternavn, String telefonNummer) {

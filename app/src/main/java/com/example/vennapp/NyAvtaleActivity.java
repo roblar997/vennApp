@@ -39,6 +39,7 @@ public class NyAvtaleActivity extends AppCompatActivity {
     LinearLayout message;
     public static String PROVIDER_AVTALE ="com.example.vennapp.contentprovider.AvtaleProvider" ;
     public static final Uri CONTENT_AVTALE_URI = Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale");
+    public static final Uri CONTENT_AVTALEM_URI = Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale");
 
     SQLiteDatabase db;
     public void leggtil(LinearLayout layout) {
@@ -63,17 +64,20 @@ public class NyAvtaleActivity extends AppCompatActivity {
         Avtale avtale = new Avtale(datoInput.getText().toString(),tidInput.getText().toString(),meldingInput.getText().toString());
         dbHelperAvtale.leggTilAvtale(db,avtale);
         //Prøv å legg til
+        ContentValues v=new ContentValues();
+
+        v.put("tid",datoInput.getText().toString());
+        v.put("dato",tidInput.getText().toString());
+        v.put("melding",meldingInput.getText().toString());
         try{
-            Long id = dbHelperAvtale.getMaxId(db);
-            ContentValues v=new ContentValues();
-            v.put("_ID",id);
-            v.put("tid",datoInput.getText().toString());
-            v.put("dato",tidInput.getText().toString());
-            v.put("melding",meldingInput.getText().toString());
+
+
             getContentResolver().insert(CONTENT_AVTALE_URI,v);
 
         }
         catch(Exception ex){
+            getContentResolver().delete(CONTENT_AVTALEM_URI,null,null);
+            getContentResolver().insert(CONTENT_AVTALE_URI,v);
 
         }
 

@@ -50,8 +50,8 @@ public class NyKontaktActivity extends AppCompatActivity {
         dbHelper.leggTilKontakt(db,kontakt);
         try{
             ContentValues v=new ContentValues();
-            Long id = dbHelper.getMaxId(db);
-            v.put("_ID",id);
+
+
             v.put("Fornavn",fornavnInput.getText().toString());
             v.put("Etternavn",etternavnInput.getText().toString());
             v.put("Telefon",telefonInput.getText().toString());

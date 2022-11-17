@@ -51,6 +51,7 @@ public class KontaktProvider extends ContentProvider {
             onCreate(db);
         }
     }
+
     @Override
     public boolean onCreate() {
         DBhelper = new DatabaseHelper(getContext());
@@ -92,7 +93,7 @@ public class KontaktProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         if (uriMatcher.match(uri) == KONTAKT) {
-            db.update(TABLE_SHARED_KONTAKTER, values, _ID + " = " + uri.getPathSegments().get(1), null);
+            db.update(TABLE_SHARED_KONTAKTER, values, _ID + " = " + Long.parseLong(uri.getPathSegments().get(1)), null);
             getContext().getContentResolver().notifyChange(uri, null);
             return 1;
         }
@@ -106,7 +107,8 @@ public class KontaktProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         if (uriMatcher.match(uri) == KONTAKT) {
-            db.delete(TABLE_SHARED_KONTAKTER, _ID + " = " + uri.getPathSegments().get(1), selectionArgs);
+            String[] selectionArguments = new String[]{uri.getPathSegments().get(1)};
+            db.delete(TABLE_SHARED_KONTAKTER, _ID + " = ?", selectionArguments);
             getContext().getContentResolver().notifyChange(uri, null);
             return 1;
         }

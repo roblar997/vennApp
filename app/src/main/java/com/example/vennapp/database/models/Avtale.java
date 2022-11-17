@@ -2,6 +2,7 @@ package com.example.vennapp.database.models;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Objects;
 
 public class Avtale {
     private Long _ID;
@@ -12,7 +13,21 @@ public class Avtale {
     public Avtale(){
 
     }
-    public Avtale(String dato,String tid,String melding) {
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Avtale avtale = (Avtale) o;
+        return Objects.equals(_ID, avtale._ID) && Objects.equals(tid, avtale.tid) && Objects.equals(dato, avtale.dato) && Objects.equals(melding, avtale.melding);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(_ID, tid, dato, melding);
+    }
+
+    public Avtale(String dato, String tid, String melding) {
         this.tid = tid;
         this.dato = dato;
         this.melding = melding;
