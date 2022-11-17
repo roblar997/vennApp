@@ -54,43 +54,6 @@ public class AvtaleActivity extends AppCompatActivity {
     public static final Uri CONTENT_AVTALE_URI = Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale");
 
     SQLiteDatabase db;
-    public void leggtil(LinearLayout layout) {
-        String dato = datoInput.getText().toString();
-        String tid = tidInput.getText().toString();
-        Pattern patternDato = Pattern.compile( "^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
-        Matcher matcherDato = patternDato.matcher(dato);
-        boolean found = true;
-        if (!matcherDato.find()) {
-            dateError.setText("Må være formatert yyyy-MM-dd");
-            found = false;
-        }
-        Pattern patternTid = Pattern.compile( "^[0-9]{2}:[0-9]{2}:[0-9]{2}$");
-        Matcher matcherTid = patternTid.matcher(tid);
-        if (!matcherTid.find()) {
-            timeError.setText("Må være formatert HH:mm:ss");
-            found = false;
-        }
-        if(!found ){
-            return;
-        }
-        Avtale avtale = new Avtale(datoInput.getText().toString(),tidInput.getText().toString(),meldingInput.getText().toString());
-        dbHelperAvtale.leggTilAvtale(db,avtale);
-        //Prøv å legg til
-        try{
-            Long id = dbHelperAvtale.getMaxId(db);
-            ContentValues v=new ContentValues();
-            v.put("_ID",id);
-            v.put("tid",datoInput.getText().toString());
-            v.put("dato",tidInput.getText().toString());
-            v.put("melding",meldingInput.getText().toString());
-            getContentResolver().insert(CONTENT_AVTALE_URI,v);
-
-        }
-        catch(Exception ex){
-
-        }
-
-    }
 
 
 
@@ -99,12 +62,9 @@ public class AvtaleActivity extends AppCompatActivity {
             return;
         dbHelperKontaktAvtale.fjernAlleKontaktFraAvtale(db,Long.parseLong(avtaleId.getText().toString()));
         dbHelperAvtale.slettAvtale(db,Long.parseLong(avtaleId.getText().toString()));
-        try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()),null, new String[]{avtaleId.getText().toString()});
-        }
-        catch (Exception ex){
 
-        }
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()),null, new String[]{"_ID"});
+
 
 
     }
@@ -250,7 +210,7 @@ public class AvtaleActivity extends AppCompatActivity {
             v.put("tid",tidInput.getText().toString());
             v.put("dato",datoInput.getText().toString());
             v.put("melding",meldingInput.getText().toString());
-            getContentResolver().update(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()) ,v,null, null);
+            getContentResolver().update(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()) ,v,null, new String[]{"_ID"});
 
         }
         catch (Exception ex){

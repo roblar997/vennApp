@@ -72,7 +72,7 @@ public class KontaktListActivity extends AppCompatActivity {
         dbHelper.slettKontakt(db,kontaktid);
 
         try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/"+friendId.getText().toString()),null, null);
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/"+id),null, new String[]{"_ID"});
 
         }
         catch (Exception ex){

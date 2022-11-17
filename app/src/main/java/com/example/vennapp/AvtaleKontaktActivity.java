@@ -50,52 +50,22 @@ public class AvtaleKontaktActivity extends AppCompatActivity {
     DBHandlerAvtale dbHelperAvtale;
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
     LinearLayout message;
-    public static String PROVIDER_AVTALE ="com.example.vennapp.contentprovider.AvtaleProvider" ;
-    public static final Uri CONTENT_AVTALE_URI = Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale");
+    public static String PROVIDER_KONTAKTAVTALE ="com.example.vennapp.contentprovider.KontaktAvtaleProvider" ;
+
+    public static final Uri CONTENT_KONTAKTAVTALE_URI = Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale");
 
     SQLiteDatabase db;
-    public void leggtil(LinearLayout layout) {
-        String dato = datoInput.getText().toString();
-        String tid = tidInput.getText().toString();
-        Pattern patternDato = Pattern.compile( "^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
-        Matcher matcherDato = patternDato.matcher(dato);
-        boolean found = true;
-        if (!matcherDato.find()) {
-            dateError.setText("Må være formatert yyyy-MM-dd");
-            found = false;
-        }
-        Pattern patternTid = Pattern.compile( "^[0-9]{2}:[0-9]{2}:[0-9]{2}$");
-        Matcher matcherTid = patternTid.matcher(tid);
-        if (!matcherTid.find()) {
-            timeError.setText("Må være formatert HH:mm:ss");
-            found = false;
-        }
-        if(!found ){
-            return;
-        }
-        Avtale avtale = new Avtale(datoInput.getText().toString(),tidInput.getText().toString(),meldingInput.getText().toString());
-        dbHelperAvtale.leggTilAvtale(db,avtale);
-        //Prøv å legg til
-        try{
-            Long id = dbHelperAvtale.getMaxId(db);
-            ContentValues v=new ContentValues();
-            v.put("_ID",id);
-            v.put("tid",datoInput.getText().toString());
-            v.put("dato",tidInput.getText().toString());
-            v.put("melding",meldingInput.getText().toString());
-            getContentResolver().insert(CONTENT_AVTALE_URI,v);
-            visalle(layout);
-        }
-        catch(Exception ex){
 
-        }
-
-    }
 
     public void fjernKontaktFraAvtale(LinearLayout layout, Long kontaktID, Long avtaleId) {
         KontaktAvtale kontaktAvtale = new KontaktAvtale(kontaktID,avtaleId);
         dbHelperKontaktAvtale.fjernKontaktFraAvtale(db,kontaktAvtale);
+        try{
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/avtale/"+String.valueOf(kontaktID)+"/"+String.valueOf(avtaleId)),null, new String[]{"kontaktId","avtaleId"});
+        }
+        catch (Exception ex){
 
+        }
         visalle(layout);
     }
     public void visalleKontakterMedAvtale(LinearLayout layout, Long avtaleIdInput) {
@@ -431,7 +401,19 @@ public class AvtaleKontaktActivity extends AppCompatActivity {
     public void leggtilKontaktTilAvtale(LinearLayout layout, Long kontaktId, Long avtaleId) {
         KontaktAvtale kontaktavtale = new KontaktAvtale(kontaktId,avtaleId);
         dbHelperKontaktAvtale.leggTilKontaktTilAvtale(db,kontaktavtale);
+        //Prøv å legg til
+        try{
+            Long id = dbHelperAvtale.getMaxId(db);
+            ContentValues v=new ContentValues();
+            v.put("kontaktId",String.valueOf(kontaktId));
+            v.put("avtaleId",String.valueOf(avtaleId));
 
+            getContentResolver().insert(CONTENT_KONTAKTAVTALE_URI,v);
+
+        }
+        catch(Exception ex){
+
+        }
         visalleKontakterMedAvtale(layout,avtaleId);
     }
     public void visalle(LinearLayout layout) {

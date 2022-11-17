@@ -40,9 +40,7 @@ public class DBHandlerKontaktAvtale extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String LAG_TABELLKONTAKT = "CREATE TABLE IF NOT EXISTS " + TABLE_KONTAKTER + "(" + KEY_ID + " INTEGER PRIMARY KEY ," + KEY_FORNAVN + " TEXT," + KEY_ETTERNAVN + " TEXT," + KEY_TELEFON + " TEXT" + ")";
-        Log.d("SQL", LAG_TABELLKONTAKT);
-        db.execSQL(LAG_TABELLKONTAKT);
+
         String LAG_TABELL ="CREATE TABLE IF NOT EXISTS " + TABLE_KONTAKTAVTALE + "("
                 + KEY_ID1 + " INTEGER,"
                 + KEY_ID2 + " INTEGER,"

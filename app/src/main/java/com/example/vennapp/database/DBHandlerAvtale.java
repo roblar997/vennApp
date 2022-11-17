@@ -50,7 +50,7 @@ public class DBHandlerAvtale extends SQLiteOpenHelper {
                 new String[]{Long.toString(inn_id)});
     }
     public Long getMaxId(SQLiteDatabase db){
-        String query = "SELECT MAX ( " + KEY_ID + ") FROM " + TABLE_AVTALER;
+        String query = "SELECT MAX ( " + KEY_ID + " ) FROM " + TABLE_AVTALER;
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             do {
@@ -79,11 +79,7 @@ public class DBHandlerAvtale extends SQLiteOpenHelper {
         }
         return avtaleListe;
     }
-    public List<Avtale> finnAlleAvtalerMedGittDato(SQLiteDatabase db, java.sql.Date date) {
 
-        return finnAlleAvtalerMedGittDato(db,date.toString());
-
-    }
     public List<Avtale> finnAlleAvtaler(SQLiteDatabase db) {
 
         List<Avtale> avtaleListe = new ArrayList<Avtale>();

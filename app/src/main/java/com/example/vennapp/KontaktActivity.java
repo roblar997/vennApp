@@ -45,24 +45,7 @@ public class KontaktActivity extends AppCompatActivity {
     DBHandlerKontakt dbHelper;
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
     SQLiteDatabase db;
-    public void leggtil(LinearLayout layout) {
-        Kontakt kontakt = new Kontakt(fornavnInput.getText().toString(),etternavnInput.getText().toString(),telefonInput.getText().toString());
-        dbHelper.leggTilKontakt(db,kontakt);
-        try{
-            ContentValues v=new ContentValues();
-            Long id = dbHelper.getMaxId(db);
-            v.put("_ID",id);
-            v.put("Fornavn",fornavnInput.getText().toString());
-            v.put("Etternavn",etternavnInput.getText().toString());
-            v.put("Telefon",telefonInput.getText().toString());
-            getContentResolver().insert(CONTENT_KONTAKT_URI,v);
-        }
-        catch (Exception ex){
 
-        }
-
-        visalle(layout);
-    }
 
     public void slettKontakt(LinearLayout layout) {
         if(friendId.getText().toString().isEmpty())
@@ -72,178 +55,15 @@ public class KontaktActivity extends AppCompatActivity {
         dbHelper.slettKontakt(db,kontaktid);
 
         try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/"+friendId.getText().toString()),null, null);
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/"+friendId.getText().toString()),null, new String[]{"_ID"});
 
         }
         catch (Exception ex){
 
     }
-        visalle(layout);
-    }
-    public void visalle(LinearLayout layout) {
-        layout.removeAllViews();
-        String tekst = "";
-        try {
-            TextView tittelTekst= new TextView(this);
-            tittelTekst.setText("MINE KONTAKTER");
-
-            tittelTekst.setTextColor(Color.BLACK);
-            tittelTekst.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
-            tittelTekst.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT
-            ));
-
-            layout.addView(tittelTekst);
-            List<Kontakt> kontakter = dbHelper.finnAlleKontakter(db);
-            for (Kontakt kontakt : kontakter) {
-
-                CardView cardView = new CardView(this);
-                cardView.setBackgroundColor(Color.BLACK);
-
-                cardView.setContentPadding(10,10,10,10);
-
-                Space space = new Space(this);
-                space.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                ));
-                space.setMinimumHeight(10);
-                LinearLayout layoutet = new LinearLayout(this);
-                layoutet.setOrientation(LinearLayout.VERTICAL);
-
-                layoutet.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                ));
-                TextView textTittel= new TextView(this);
-                textTittel.setText("KONTAKT");
-                textTittel.setBackgroundColor(Color.BLACK);
-                textTittel.setTextColor(Color.WHITE);
-                textTittel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
-                textTittel.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                ));
-
-                TextView textFornavn = new TextView(this);
-                SpannableString spannableStringFornavn = new SpannableString("Fornavn: " + kontakt.getFornavn());
-
-                spannableStringFornavn.setSpan(new StyleSpan(Typeface.BOLD), 0, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                textFornavn.setText(spannableStringFornavn);
-
-                textFornavn.setBackgroundColor(Color.WHITE);
-                textFornavn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                textFornavn.setTextColor(Color.BLACK);
-
-                textFornavn.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                ));
-
-                SpannableString spannableStringEtternavn = new SpannableString("Etternavn: " + kontakt.getEtternavn());
-
-                spannableStringEtternavn.setSpan(new StyleSpan(Typeface.BOLD), 0, 10, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-
-                TextView textEtternavn = new TextView(this);
-                textEtternavn.setText(spannableStringEtternavn);
-                textEtternavn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                textEtternavn.setTextColor(Color.BLACK);
-                textEtternavn.setBackgroundColor(Color.WHITE);
-                textEtternavn.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                ));
-
-                TextView textTelefon = new TextView(this);
-
-                SpannableString spannableStringTelefon = new SpannableString("Telefon: " + kontakt.getTelefonNummer());
-
-                spannableStringTelefon.setSpan(new StyleSpan(Typeface.BOLD), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                textTelefon.setText(spannableStringTelefon);
-                textTelefon.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-
-                textTelefon.setTextColor(Color.BLACK);
-                textTelefon.setBackgroundColor(Color.WHITE);
-                textTelefon.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                ));
-                Button velg = new Button(this);
-                velg.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                ));
-                velg.setText("Velg");
-                velg.setBackgroundColor(Color.parseColor("#8BC34A"));
-                velg.setTextColor(Color.WHITE);
-                velg.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                ));
-                velg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        friendId.setText(kontakt.get_ID().toString());
-                        telefonInput.setText(kontakt.getTelefonNummer());
-                        fornavnInput.setText(kontakt.getFornavn());
-                        etternavnInput.setText(kontakt.getEtternavn());
-                    }
-                });
-
-
-                LinearLayout layoutetBtn = new LinearLayout(this);
-                layoutetBtn.setOrientation(LinearLayout.HORIZONTAL);
-                layoutetBtn.setGravity(Gravity.RIGHT);
-                layoutetBtn.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                ));
-                Space space1 = new Space(this);
-                space1.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                ));
-                Space space2 = new Space(this);
-                space2.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                ));
-                space.setMinimumHeight(10);
-                space1.setMinimumWidth(5);
-                space2.setMinimumWidth(5);
-
-
-                velg.setWidth(80);
-
-                layoutetBtn.setBackgroundColor(Color.WHITE);
-
-
-                layoutet.addView(textTittel);
-                layoutet.addView(textFornavn);
-                layoutet.addView(textEtternavn);
-                layoutet.addView(textTelefon);
-
-                layoutetBtn.addView(velg);
-                layoutetBtn.addView(space2);
-
-                layoutetBtn.addView(space1);
-                layoutet.addView(layoutetBtn);
-                cardView.addView(layoutet);
-
-                layout.addView(space);
-                layout.addView(cardView);
-            }
-
-        }
-        catch (Exception ex){
-
-        }
-
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater(); inflater.inflate(R.menu.menu, menu);
@@ -336,14 +156,14 @@ public class KontaktActivity extends AppCompatActivity {
             v.put("Fornavn",fornavnInput.getText().toString());
             v.put("Etternavn",etternavnInput.getText().toString());
             v.put("Telefon",telefonInput.getText().toString());
-            getContentResolver().update(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/"+friendId.getText().toString()),v,null, new String[]{friendId.getText().toString()});
+            getContentResolver().update(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/"+friendId.getText().toString()),v,null, new String[]{"_ID"});
 
         }
         catch (Exception ex){
 
         }
 
-        visalle(layout);
+
     }
     @Override
     protected void onDestroy() {
