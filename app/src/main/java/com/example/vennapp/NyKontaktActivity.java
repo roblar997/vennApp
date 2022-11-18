@@ -2,6 +2,7 @@ package com.example.vennapp;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -48,19 +49,21 @@ public class NyKontaktActivity extends AppCompatActivity {
     public void leggtil(LinearLayout layout) {
         Kontakt kontakt = new Kontakt(fornavnInput.getText().toString(),etternavnInput.getText().toString(),telefonInput.getText().toString());
         dbHelper.leggTilKontakt(db,kontakt);
-        try{
-            ContentValues v=new ContentValues();
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        boolean canShare = sharedPreferences.getBoolean("canShare",false);
+        if(canShare) {
+            try {
+                ContentValues v = new ContentValues();
 
 
-            v.put("Fornavn",fornavnInput.getText().toString());
-            v.put("Etternavn",etternavnInput.getText().toString());
-            v.put("Telefon",telefonInput.getText().toString());
-            getContentResolver().insert(CONTENT_KONTAKT_URI,v);
+                v.put("Fornavn", fornavnInput.getText().toString());
+                v.put("Etternavn", etternavnInput.getText().toString());
+                v.put("Telefon", telefonInput.getText().toString());
+                getContentResolver().insert(CONTENT_KONTAKT_URI, v);
+            } catch (Exception ex) {
+
+            }
         }
-        catch (Exception ex){
-
-        }
-
 
     }
 

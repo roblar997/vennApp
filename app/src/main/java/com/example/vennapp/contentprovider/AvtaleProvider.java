@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class AvtaleProvider extends ContentProvider {
-    public static final String _ID = "_id";
+    public static final String _ID = "_ID";
 
     private static final String DB_NAVN = "sharedAvtaler.db";
     private static final int DB_VERSJON = 1;
@@ -97,7 +97,8 @@ public class AvtaleProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         if (uriMatcher.match(uri) == AVTALE) {
-            db.update(TABLE_SHARED_AVTALER, values, _ID + " = " + Long.parseLong(uri.getPathSegments().get(1)),null);
+            String[] selectionArgument = new String[]{uri.getPathSegments().get(1)};
+            db.update(TABLE_SHARED_AVTALER, values, _ID + " = ? ",selectionArgument);
             getContext().getContentResolver().notifyChange(uri, null);
             return 1;
         }

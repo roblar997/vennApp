@@ -22,13 +22,13 @@ public class DBHandlerKontaktAvtale extends SQLiteOpenHelper {
     static String KEY_ID2 = "avtaleId";
     static String KEY_REF_ID2 = "_ID";
     static String KEY_REF_TABLE2 = "Avtaler";
-    static String KEY_ID = "_ID";
+
     static String TABLE_KONTAKTAVTALE = "KontaktAvtale";
     static String KEY_FORNAVN = "Fornavn";
     static String KEY_ETTERNAVN = "Etternavn";
     static String KEY_TELEFON = "Telefon";
 
-    static String TABLE_KONTAKTER = "Kontakter";
+
 
     static int DATABASE_VERSION = 3;static String DATABASE_NAME = "telefonkontakt";
     public DBHandlerKontaktAvtale(Context context)
@@ -86,17 +86,34 @@ public class DBHandlerKontaktAvtale extends SQLiteOpenHelper {
         }
         return kontaktListe;
     }
+    public List<KontaktAvtale> finnAlleKontaktAvtaler(SQLiteDatabase db) {
 
+
+        List<KontaktAvtale> kontaktAvtaler = new ArrayList<KontaktAvtale>();
+        String selectQuery = "SELECT * FROM " + TABLE_KONTAKTAVTALE;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                KontaktAvtale kontaktAvtale = new KontaktAvtale();
+                kontaktAvtale.setKontaktId(cursor.getLong(0));
+                kontaktAvtale.setAvtaleId(cursor.getLong(1));
+
+                kontaktAvtaler.add(kontaktAvtale);}
+            while (cursor.moveToNext());
+            cursor.close();
+        }
+        return kontaktAvtaler;
+    }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_KONTAKTAVTALE );
 
     }
 
-    public void leggTilKontaktTilAvtale(SQLiteDatabase db, KontaktAvtale avtaleKontakt) {
+    public void leggTilKontaktTilAvtale(SQLiteDatabase db, KontaktAvtale kontaktavtale) {
         ContentValues values = new ContentValues();
-        values.put(KEY_ID1, avtaleKontakt.getKontaktId());
-        values.put(KEY_ID2, avtaleKontakt.getAvtaleId());
+        values.put(KEY_ID1, kontaktavtale.getKontaktId());
+        values.put(KEY_ID2, kontaktavtale.getAvtaleId());
         db.insert(TABLE_KONTAKTAVTALE , null, values);
     }
 

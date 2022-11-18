@@ -2,6 +2,7 @@ package com.example.vennapp;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -51,7 +52,6 @@ public class AvtaleActivity extends AppCompatActivity {
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
     LinearLayout message;
     public static String PROVIDER_AVTALE ="com.example.vennapp.contentprovider.AvtaleProvider" ;
-    public static final Uri CONTENT_AVTALE_URI = Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale");
 
     SQLiteDatabase db;
 
@@ -62,9 +62,15 @@ public class AvtaleActivity extends AppCompatActivity {
             return;
         dbHelperKontaktAvtale.fjernAlleKontaktFraAvtale(db,Long.parseLong(avtaleId.getText().toString()));
         dbHelperAvtale.slettAvtale(db,Long.parseLong(avtaleId.getText().toString()));
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        boolean canShare = sharedPreferences.getBoolean("canShare",false);
+        if(canShare) {
+            try {
+                    getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()),null, null);
+            } catch (Exception ex) {
 
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()),null, new String[]{avtaleId.getText().toString()});
-
+            }
+        }
 
 
     }
@@ -110,10 +116,10 @@ public class AvtaleActivity extends AppCompatActivity {
         db=dbHelperAvtale.getWritableDatabase();
 
         dbHelperKontakt = new DBHandlerKontakt(this);
-        db=dbHelperKontakt.getWritableDatabase();
+
 
         dbHelperKontaktAvtale = new DBHandlerKontaktAvtale(this);
-        db=dbHelperKontaktAvtale.getWritableDatabase();
+
 
         datoInput = (EditText) findViewById(R.id.datoInput);
         tidInput = (EditText) findViewById(R.id.tidInput);
@@ -164,7 +170,7 @@ public class AvtaleActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String avtaleInp = avtaleId.getText().toString();
-                Intent mainIntent2= new Intent(AvtaleActivity.this, AvtaleKontaktActivity.class);
+                Intent mainIntent2= new Intent(AvtaleActivity.this, KontaktAvtaleActivity.class);
                 mainIntent2.putExtra("avtaleId",avtaleId.getText().toString());
                 mainIntent2.putExtra("dato",datoInput.getText().toString());
                 mainIntent2.putExtra("tid",tidInput.getText().toString());
@@ -204,17 +210,20 @@ public class AvtaleActivity extends AppCompatActivity {
         avtale.setMelding(meldingInput.getText().toString());
         avtale.set_ID(Long.parseLong(avtaleId.getText().toString()));
         dbHelperAvtale.oppdaterAvtale(db, avtale);
-        try{
-            ContentValues v=new ContentValues();
-            v.put("_id",Long.parseLong(avtaleId.getText().toString()));
-            v.put("tid",tidInput.getText().toString());
-            v.put("dato",datoInput.getText().toString());
-            v.put("melding",meldingInput.getText().toString());
-            getContentResolver().update(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()) ,v,null, new String[]{"_ID"});
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        boolean canShare = sharedPreferences.getBoolean("canShare",false);
+        if(canShare) {
+            try {
+                ContentValues v = new ContentValues();
+                v.put("_id", Long.parseLong(avtaleId.getText().toString()));
+                v.put("tid", tidInput.getText().toString());
+                v.put("dato", datoInput.getText().toString());
+                v.put("melding", meldingInput.getText().toString());
+                getContentResolver().update(Uri.parse("content://" + PROVIDER_AVTALE + "/avtale/" + avtaleId.getText().toString()), v, null, new String[]{"_ID"});
 
-        }
-        catch (Exception ex){
+            } catch (Exception ex) {
 
+            }
         }
 
 

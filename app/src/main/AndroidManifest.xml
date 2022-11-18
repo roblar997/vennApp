@@ -107,7 +107,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AvtaleKontaktActivity"
+            android:name=".KontaktAvtaleActivity"
             android:configChanges="orientation"
             android:exported="true">
             <intent-filter>

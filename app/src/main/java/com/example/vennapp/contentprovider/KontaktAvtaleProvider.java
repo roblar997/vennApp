@@ -29,12 +29,12 @@ public class KontaktAvtaleProvider extends ContentProvider {
 
     KontaktAvtaleProvider.DatabaseHelper DBhelper;
     SQLiteDatabase db;
-    public static final Uri CONTENT_URI = Uri.parse("content://" + PROVIDER + "/kontakt ");
+
     private static final UriMatcher uriMatcher;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PROVIDER, "kontaktavtale", KONTAKTAVTALE);
-        uriMatcher.addURI(PROVIDER, "kontaktavtale/#", MKONTAKTAVTALE);
+        uriMatcher.addURI(PROVIDER, "kontaktavtale", MKONTAKTAVTALE);
+        uriMatcher.addURI(PROVIDER, "kontaktavtale/#", KONTAKTAVTALE);
     }
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context) {

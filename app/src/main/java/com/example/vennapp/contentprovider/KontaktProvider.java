@@ -12,7 +12,7 @@ import android.net.Uri;
 import android.util.Log;
 
 public class KontaktProvider extends ContentProvider {
-    public static final String _ID = "_id";
+    public static final String _ID = "_ID";
 
     private static final String DB_NAVN = "sharedKontakter.db";
     private static final int DB_VERSJON = 1;
@@ -27,12 +27,12 @@ public class KontaktProvider extends ContentProvider {
 
     KontaktProvider.DatabaseHelper DBhelper;
     SQLiteDatabase db;
-    public static final Uri CONTENT_URI = Uri.parse("content://" + PROVIDER + "/kontakt ");
+    public static final Uri CONTENT_URI = Uri.parse("content://" + PROVIDER + "/kontakt");
     private static final UriMatcher uriMatcher;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PROVIDER, "kontakt", KONTAKT);
-        uriMatcher.addURI(PROVIDER, "kontakt/#", MKONTAKT);
+        uriMatcher.addURI(PROVIDER, "kontakt", MKONTAKT);
+        uriMatcher.addURI(PROVIDER, "kontakt/#", KONTAKT);
     }
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context) {
@@ -93,7 +93,8 @@ public class KontaktProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         if (uriMatcher.match(uri) == KONTAKT) {
-            db.update(TABLE_SHARED_KONTAKTER, values, _ID + " = " + Long.parseLong(uri.getPathSegments().get(1)), null);
+            String[] selectionArgument = new String[]{uri.getPathSegments().get(1)};
+            db.update(TABLE_SHARED_KONTAKTER, values, _ID + " = ? ",selectionArgument);
             getContext().getContentResolver().notifyChange(uri, null);
             return 1;
         }
@@ -108,7 +109,7 @@ public class KontaktProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         if (uriMatcher.match(uri) == KONTAKT) {
             String[] selectionArguments = new String[]{uri.getPathSegments().get(1)};
-            db.delete(TABLE_SHARED_KONTAKTER, _ID + " = ?", selectionArguments);
+            db.delete(TABLE_SHARED_KONTAKTER, _ID + " = ? ", selectionArguments);
             getContext().getContentResolver().notifyChange(uri, null);
             return 1;
         }

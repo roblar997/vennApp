@@ -2,6 +2,7 @@ package com.example.vennapp;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -70,13 +71,15 @@ public class KontaktListActivity extends AppCompatActivity {
         Long kontaktid = (Long.parseLong(id));
         dbHelperKontaktAvtale.fjernAlleAvtalerFraKontakt(db,kontaktid);
         dbHelper.slettKontakt(db,kontaktid);
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        boolean canShare = sharedPreferences.getBoolean("canShare",false);
+        if(canShare) {
+            try {
+                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKT + "/kontakt/" + id), null, new String[]{id});
 
-        try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/"+id),null, new String[]{id});
+            } catch (Exception ex) {
 
-        }
-        catch (Exception ex){
-
+            }
         }
         visalle(message);
     }

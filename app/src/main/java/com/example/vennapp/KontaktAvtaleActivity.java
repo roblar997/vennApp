@@ -2,6 +2,7 @@ package com.example.vennapp;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -10,7 +11,6 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
-import android.util.Patterns;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
@@ -36,11 +36,9 @@ import com.example.vennapp.database.models.Kontakt;
 import com.example.vennapp.database.models.KontaktAvtale;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class AvtaleKontaktActivity extends AppCompatActivity {
+public class KontaktAvtaleActivity extends AppCompatActivity {
     EditText tidInput;
     EditText datoInput;
     TextView timeError;
@@ -61,11 +59,14 @@ public class AvtaleKontaktActivity extends AppCompatActivity {
     public void fjernKontaktFraAvtale(LinearLayout layout, Long kontaktId, Long avtaleId) {
         KontaktAvtale kontaktAvtale = new KontaktAvtale(kontaktId,avtaleId);
         dbHelperKontaktAvtale.fjernKontaktFraAvtale(db,kontaktAvtale);
-        try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale/" + String.valueOf(kontaktId)+"-"+String.valueOf(avtaleId)),null, new String[]{String.valueOf(kontaktId),String.valueOf(avtaleId)});
-        }
-        catch (Exception ex){
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        boolean canShare = sharedPreferences.getBoolean("canShare",false);
+        if(canShare) {
+            try {
+                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/" + String.valueOf(kontaktId) + "-" + String.valueOf(avtaleId)), null, new String[]{String.valueOf(kontaktId), String.valueOf(avtaleId)});
+            } catch (Exception ex) {
 
+            }
         }
         visalle(layout);
     }
@@ -404,18 +405,21 @@ public class AvtaleKontaktActivity extends AppCompatActivity {
     public void leggtilKontaktTilAvtale(LinearLayout layout, Long kontaktId, Long avtaleId) {
         KontaktAvtale kontaktavtale = new KontaktAvtale(kontaktId,avtaleId);
         dbHelperKontaktAvtale.leggTilKontaktTilAvtale(db,kontaktavtale);
-        //Prøv å legg til
-        try{
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        boolean canShare = sharedPreferences.getBoolean("canShare",false);
+        if(canShare) {
+            //Prøv å legg til
+            try {
 
-            ContentValues v=new ContentValues();
-            v.put("kontaktId",String.valueOf(kontaktId));
-            v.put("avtaleId",String.valueOf(avtaleId));
+                ContentValues v = new ContentValues();
+                v.put("kontaktId", String.valueOf(kontaktId));
+                v.put("avtaleId", String.valueOf(avtaleId));
 
-            getContentResolver().insert(CONTENT_KONTAKTAVTALE_URI,v);
+                getContentResolver().insert(CONTENT_KONTAKTAVTALE_URI, v);
 
-        }
-        catch(Exception ex){
+            } catch (Exception ex) {
 
+            }
         }
         visalleKontakterMedAvtale(layout,avtaleId);
     }
@@ -598,10 +602,10 @@ public class AvtaleKontaktActivity extends AppCompatActivity {
         db=dbHelperAvtale.getWritableDatabase();
 
         dbHelperKontakt = new DBHandlerKontakt(this);
-        db=dbHelperKontakt.getWritableDatabase();
+
 
         dbHelperKontaktAvtale = new DBHandlerKontaktAvtale(this);
-        db=dbHelperKontaktAvtale.getWritableDatabase();
+
 
         datoInput = (EditText) findViewById(R.id.datoInput);
         tidInput = (EditText) findViewById(R.id.tidInput);
@@ -649,7 +653,7 @@ public class AvtaleKontaktActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent mainIntent2= new Intent(AvtaleKontaktActivity.this, AvtaleActivity.class);
+                Intent mainIntent2= new Intent(KontaktAvtaleActivity.this, AvtaleActivity.class);
                 mainIntent2.putExtra("avtaleId",avtaleId.getText().toString());
                 mainIntent2.putExtra("dato",datoInput.getText().toString());
                 mainIntent2.putExtra("tid",tidInput.getText().toString());

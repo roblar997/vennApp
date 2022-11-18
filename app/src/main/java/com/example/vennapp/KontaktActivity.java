@@ -2,6 +2,7 @@ package com.example.vennapp;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -40,7 +41,6 @@ public class KontaktActivity extends AppCompatActivity {
     EditText telefonInput;
     LinearLayout message;
     public static String PROVIDER_KONTAKT ="com.example.vennapp.contentprovider.KontaktProvider" ;
-    public static final Uri CONTENT_KONTAKT_URI = Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt");
 
     DBHandlerKontakt dbHelper;
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
@@ -48,21 +48,23 @@ public class KontaktActivity extends AppCompatActivity {
 
 
     public void slettKontakt(LinearLayout layout) {
-        if(friendId.getText().toString().isEmpty())
+        if (friendId.getText().toString().isEmpty())
             return;
         Long kontaktid = (Long.parseLong(friendId.getText().toString()));
-        dbHelperKontaktAvtale.fjernAlleAvtalerFraKontakt(db,kontaktid);
-        dbHelper.slettKontakt(db,kontaktid);
+        dbHelperKontaktAvtale.fjernAlleAvtalerFraKontakt(db, kontaktid);
+        dbHelper.slettKontakt(db, kontaktid);
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        boolean canShare = sharedPreferences.getBoolean("canShare", false);
+        if (canShare) {
+            try {
+                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKT + "/kontakt/" + friendId.getText().toString()), null, null);
 
-        try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/"+friendId.getText().toString()),null, new String[]{friendId.getText().toString()});
-
+            } catch (Exception ex) {
+            }
         }
-        catch (Exception ex){
-
     }
 
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -109,7 +111,7 @@ public class KontaktActivity extends AppCompatActivity {
 
         actionBar.setDisplayHomeAsUpEnabled(true);
         dbHelperKontaktAvtale = new DBHandlerKontaktAvtale(this);
-        db=dbHelperKontaktAvtale.getWritableDatabase();
+
         String friendIdText = getIntent().getStringExtra("friendId");
         if(friendId != null)
             friendId.setText(friendIdText);
@@ -150,17 +152,20 @@ public class KontaktActivity extends AppCompatActivity {
         kontakt.setTelefonNummer(telefonInput.getText().toString());
         kontakt.set_ID(Long.parseLong(friendId.getText().toString()));
         dbHelper.oppdaterKontakt(db, kontakt);
-        ContentValues v=new ContentValues();
-        try{
-            v.put("_id",Long.parseLong(friendId.getText().toString()));
-            v.put("Fornavn",fornavnInput.getText().toString());
-            v.put("Etternavn",etternavnInput.getText().toString());
-            v.put("Telefon",telefonInput.getText().toString());
-            getContentResolver().update(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/" + friendId.getText().toString()),v,null,null);
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        boolean canShare = sharedPreferences.getBoolean("canShare",false);
+        if(canShare) {
+            ContentValues v = new ContentValues();
+            try {
+                v.put("_ID", Long.parseLong(friendId.getText().toString()));
+                v.put("Fornavn", fornavnInput.getText().toString());
+                v.put("Etternavn", etternavnInput.getText().toString());
+                v.put("Telefon", telefonInput.getText().toString());
+                getContentResolver().update(Uri.parse("content://" + PROVIDER_KONTAKT + "/kontakt/" + friendId.getText().toString()), v, null, new String[]{"_id"});
 
-        }
-        catch (Exception ex){
+            } catch (Exception ex) {
 
+            }
         }
 
 

@@ -40,8 +40,12 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.vennapp.Services.NotifictionSendService;
 import com.example.vennapp.Services.PeriodiskNotificationService;
+import com.example.vennapp.database.DBHandlerAvtale;
 import com.example.vennapp.database.DBHandlerKontakt;
+import com.example.vennapp.database.DBHandlerKontaktAvtale;
+import com.example.vennapp.database.models.Avtale;
 import com.example.vennapp.database.models.Kontakt;
+import com.example.vennapp.database.models.KontaktAvtale;
 import com.example.vennapp.receivers.AvtaleBroadcastReceiver;
 
 import java.util.Arrays;
@@ -55,21 +59,22 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout message;
     String CHANNEL_ID = "MinKanal3";
 
+    DBHandlerKontakt dbHelperKontakt;
+    DBHandlerAvtale dbHelperAvtale;
+    DBHandlerKontaktAvtale dbHelperKontaktAvtale;
 
-    DBHandlerKontakt dbHelper;
+    public static String PROVIDER_AVTALE ="com.example.vennapp.contentprovider.AvtaleProvider" ;
+    public static final Uri CONTENT_AVTALE_URI = Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale");
+    public static String PROVIDER_KONTAKT ="com.example.vennapp.contentprovider.KontaktProvider" ;
+    public static final Uri CONTENT_KONTAKT_URI = Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt");
+    public static String PROVIDER_KONTAKTAVTALE ="com.example.vennapp.contentprovider.KontaktAvtaleProvider" ;
+
+    public static final Uri CONTENT_KONTAKTAVTALE_URI = Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale");
+
     SQLiteDatabase db;
-    public void leggtil(LinearLayout layout) {
-        Kontakt kontakt = new Kontakt(fornavnInput.getText().toString(),etternavnInput.getText().toString(),telefonInput.getText().toString());
-        dbHelper.leggTilKontakt(db,kontakt);
 
-        visalle(layout);
-    }
 
-    public void slett(LinearLayout layout) {
-        Long kontaktid = (Long.parseLong(friendId.getText().toString()));
-        dbHelper.slettKontakt(db,kontaktid);
-        visalle(layout);
-    }
+
     public void visalle(LinearLayout layout) {
         layout.removeAllViews();
         String tekst = "";
@@ -85,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
             ));
 
             layout.addView(tittelTekst);
-            List<Kontakt> kontakter = dbHelper.finnAlleKontakter(db);
+            List<Kontakt> kontakter = dbHelperKontakt.finnAlleKontakter(db);
             for (Kontakt kontakt : kontakter) {
 
                 CardView cardView = new CardView(this);
@@ -261,6 +266,31 @@ public class MainActivity extends AppCompatActivity {
         if(alarm != null) {
             alarm.cancel(pintent);
         }
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("canShare",false);
+        editor.apply();
+        try{
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/#"),null, null);
+
+        }
+        catch (Exception ex){
+
+        }
+        try{
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/#"),null, null);
+
+        }
+        catch (Exception ex){
+
+        }
+        try{
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale/#"),null, null);
+
+        }
+        catch (Exception ex){
+
+        }
     }
     private void createNotificationChannel() {
         CharSequence name = getString(R.string.channel_name);
@@ -284,10 +314,91 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt("hour", hour);
         editor.putInt("minute", minute);
         editor.putString("message", message);
+        editor.putBoolean("canShare",true);
         editor.apply();
+
+
+        //Slett alt innhold fra kontakt tabellen
+        try{
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/#"),null, null);
+
+        }
+        catch (Exception ex){
+
+        }
+        try{
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/#"),null, null);
+
+        }
+        catch (Exception ex){
+
+        }
+        try{
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale/#"),null, null);
+
+        }
+        catch (Exception ex){
+
+        }
+        List<Kontakt> kontakter = dbHelperKontakt.finnAlleKontakter(db);
+        List<Avtale> avtaler = dbHelperAvtale.finnAlleAvtaler(db);
+        List<KontaktAvtale> kontaktAvtale = dbHelperKontaktAvtale.finnAlleKontaktAvtaler(db);
+        //Initialiser contentprovider
+        kontakter.forEach((x)->{
+            //Prøv å legg til
+            try{
+                ContentValues values=new ContentValues();
+
+                values.put("_ID",x.get_ID());
+                values.put("Fornavn",x.getFornavn());
+                values.put("Etternavn",x.getEtternavn());
+                values.put("Telefon",x.getTelefonNummer());
+                getContentResolver().insert(CONTENT_KONTAKT_URI,values);
+            }
+            catch (Exception ex){
+
+            }
+        });
+        avtaler.forEach((x)->{
+            ContentValues values=new ContentValues();
+            values.put("_ID",x.get_ID());
+            values.put("tid",x.getTid());
+            values.put("dato",x.getDato());
+            values.put("melding",x.getMelding());
+            try{
+
+
+                getContentResolver().insert(CONTENT_AVTALE_URI,values);
+
+            }
+            catch(Exception ex){
+
+
+            }
+        });
+        kontaktAvtale.forEach((x)->{
+            //Prøv å legg til
+            try{
+
+                ContentValues values=new ContentValues();
+                values.put("kontaktId",x.getKontaktId());
+                values.put("avtaleId",x.getAvtaleId());
+
+                getContentResolver().insert(CONTENT_KONTAKTAVTALE_URI,values);
+
+            }
+            catch(Exception ex){
+
+            }
+        });
+
+
         Intent periodiskIntent = new Intent();
         periodiskIntent.setAction("com.example.service.PeriodiskNotificationService");
         sendBroadcast(periodiskIntent);
+
+
+
     }
 
     @Override
@@ -300,7 +411,14 @@ public class MainActivity extends AppCompatActivity {
         Button startPeriodiskServiceBtn = findViewById(R.id.startPeriodiskServiceBtn);
 
 
+        dbHelperAvtale = new DBHandlerAvtale(this);
+        dbHelperKontakt = new DBHandlerKontakt(this);
+        db=dbHelperKontakt.getWritableDatabase();
 
+
+
+
+        dbHelperKontaktAvtale = new DBHandlerKontaktAvtale(this);
         BroadcastReceiver myBroadcastReceiver = new AvtaleBroadcastReceiver();
         IntentFilter filter = new IntentFilter("com.example.service.PeriodiskNotificationService");
         filter.addAction("com.example.service.PeriodiskNotificationService");
@@ -341,7 +459,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        dbHelper.close();
+        dbHelperKontakt.close();
+        dbHelperAvtale.close();
+        dbHelperKontaktAvtale.close();
         super.onDestroy();
     }
 }

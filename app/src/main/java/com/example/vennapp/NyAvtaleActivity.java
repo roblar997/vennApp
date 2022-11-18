@@ -2,6 +2,7 @@ package com.example.vennapp;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,7 +40,6 @@ public class NyAvtaleActivity extends AppCompatActivity {
     LinearLayout message;
     public static String PROVIDER_AVTALE ="com.example.vennapp.contentprovider.AvtaleProvider" ;
     public static final Uri CONTENT_AVTALE_URI = Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale");
-    public static final Uri CONTENT_AVTALEM_URI = Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale");
 
     SQLiteDatabase db;
     public void leggtil(LinearLayout layout) {
@@ -64,21 +64,23 @@ public class NyAvtaleActivity extends AppCompatActivity {
         Avtale avtale = new Avtale(datoInput.getText().toString(),tidInput.getText().toString(),meldingInput.getText().toString());
         dbHelperAvtale.leggTilAvtale(db,avtale);
         //Prøv å legg til
-        ContentValues v=new ContentValues();
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        boolean canShare = sharedPreferences.getBoolean("canShare",false);
+        if(canShare) {
+            ContentValues v = new ContentValues();
 
-        v.put("tid",datoInput.getText().toString());
-        v.put("dato",tidInput.getText().toString());
-        v.put("melding",meldingInput.getText().toString());
-        try{
+            v.put("tid", datoInput.getText().toString());
+            v.put("dato", tidInput.getText().toString());
+            v.put("melding", meldingInput.getText().toString());
+            try {
 
 
-            getContentResolver().insert(CONTENT_AVTALE_URI,v);
+                getContentResolver().insert(CONTENT_AVTALE_URI, v);
 
-        }
-        catch(Exception ex){
-            getContentResolver().delete(CONTENT_AVTALEM_URI,null,null);
-            getContentResolver().insert(CONTENT_AVTALE_URI,v);
+            } catch (Exception ex) {
 
+
+            }
         }
 
     }
