@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
@@ -40,6 +41,10 @@ public class KontaktActivity extends AppCompatActivity {
     EditText friendId;
     EditText telefonInput;
     LinearLayout message;
+    String preFornavn;
+    String preEtternavn;
+    String preTelefon;
+    TextView  responsKontakt;
     public static String PROVIDER_KONTAKT ="com.example.vennapp.contentprovider.KontaktProvider" ;
 
     DBHandlerKontakt dbHelper;
@@ -54,6 +59,7 @@ public class KontaktActivity extends AppCompatActivity {
         dbHelperKontaktAvtale.fjernAlleAvtalerFraKontakt(db, kontaktid);
         dbHelper.slettKontakt(db, kontaktid);
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+
         boolean canShare = sharedPreferences.getBoolean("canShare", false);
         if (canShare) {
             try {
@@ -75,11 +81,11 @@ public class KontaktActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent mainIntent2= new Intent(KontaktActivity.this, MainActivity.class);
+                Intent mainIntent2= new Intent(KontaktActivity.this, KontaktListActivity.class);
                 startActivity(mainIntent2);
                 return true;
             case R.id.home:
-                Intent mainIntentHome= new Intent(KontaktActivity.this, MainActivity.class);
+                Intent mainIntentHome= new Intent(KontaktActivity.this, KontaktListActivity.class);
                 startActivity(mainIntentHome);
                 return true;
             case R.id.avtale:
@@ -102,7 +108,7 @@ public class KontaktActivity extends AppCompatActivity {
 
         Button oppdaterBtn =  findViewById(R.id.oppdaterBtn);
         Button slettBtn =  findViewById(R.id.slettBtn);
-
+        Button resetBtn =  findViewById(R.id.resetKontakt);
         friendId = (EditText) findViewById(R.id.kontaktId);
         message = (LinearLayout) findViewById(R.id.message);
         dbHelper = new DBHandlerKontakt(this);
@@ -111,27 +117,42 @@ public class KontaktActivity extends AppCompatActivity {
 
         actionBar.setDisplayHomeAsUpEnabled(true);
         dbHelperKontaktAvtale = new DBHandlerKontaktAvtale(this);
-
+        responsKontakt = (TextView) findViewById(R.id.responsKontakt);
         String friendIdText = getIntent().getStringExtra("friendId");
         if(friendId != null)
             friendId.setText(friendIdText);
 
         String telefonText = getIntent().getStringExtra("telefon");
+        preTelefon = telefonText;
 
         if(telefonText != null )
             telefonInput.setText(telefonText);
 
         String fornavnText  = getIntent().getStringExtra("fornavn");
+        preFornavn = fornavnText;
+
         fornavnInput.setText(fornavnText);
 
         String etternavnText = getIntent().getStringExtra("etternavn");
+        preEtternavn = etternavnText;
+
         etternavnInput.setText(etternavnText);
 
-
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fornavnInput.setText(preFornavn);
+                etternavnInput.setText(preEtternavn);
+                telefonInput.setText(preTelefon);
+            }
+        });
         slettBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 slettKontakt(message);
+
+                Intent mainIntent2= new Intent(KontaktActivity.this, KontaktListActivity.class);
+                startActivity(mainIntent2);
             }
         });
         oppdaterBtn.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +175,10 @@ public class KontaktActivity extends AppCompatActivity {
         dbHelper.oppdaterKontakt(db, kontakt);
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         boolean canShare = sharedPreferences.getBoolean("canShare",false);
+        responsKontakt.setText("Kontakten er oppdatert");
+        preFornavn = fornavnInput.getText().toString();
+        preEtternavn = etternavnInput.getText().toString();
+        preTelefon = telefonInput.getText().toString();
         if(canShare) {
             ContentValues v = new ContentValues();
             try {

@@ -39,6 +39,7 @@ public class KontaktListActivity extends AppCompatActivity {
     EditText etternavnInput;
     EditText friendId;
     EditText telefonInput;
+    TextView  responsKontakt;
     LinearLayout message;
     public static String PROVIDER_KONTAKT ="com.example.vennapp.contentprovider.KontaktProvider" ;
     public static final Uri CONTENT_KONTAKT_URI = Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt");
@@ -71,6 +72,7 @@ public class KontaktListActivity extends AppCompatActivity {
         Long kontaktid = (Long.parseLong(id));
         dbHelperKontaktAvtale.fjernAlleAvtalerFraKontakt(db,kontaktid);
         dbHelper.slettKontakt(db,kontaktid);
+        responsKontakt.setText("Kontakten er slettet");
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         boolean canShare = sharedPreferences.getBoolean("canShare",false);
         if(canShare) {

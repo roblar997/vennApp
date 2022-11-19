@@ -22,10 +22,17 @@
                 android:text="KONTAKT"
                 android:textSize="32sp" />
 
+            <TextView
+                android:id="@+id/responsKontakt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#3A973E"
+                android:textSize="24sp" />
+
             <EditText
                 android:id="@+id/kontaktId"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="23dp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:visibility="invisible"
@@ -109,7 +116,7 @@
                 android:textColor="#FFFFFF" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/resetKontakt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#1D6281"

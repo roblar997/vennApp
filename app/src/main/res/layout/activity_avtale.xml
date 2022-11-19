@@ -25,11 +25,18 @@
             <EditText
                 android:id="@+id/avtaleId"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="22dp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:visibility="invisible"
                 tools:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/responsAvtale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#3A973E"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/datoLabel"
@@ -105,7 +112,7 @@
                 android:textColor="#FFFFFF" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/resetAvtale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#1D6281"

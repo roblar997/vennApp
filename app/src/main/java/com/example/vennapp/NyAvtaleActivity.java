@@ -32,6 +32,7 @@ public class NyAvtaleActivity extends AppCompatActivity {
     EditText datoInput;
     TextView timeError;
     TextView dateError;
+    TextView  responsAvtale;
     EditText meldingInput;
     EditText avtaleId;
     DBHandlerKontakt dbHelperKontakt;
@@ -47,6 +48,7 @@ public class NyAvtaleActivity extends AppCompatActivity {
         String tid = tidInput.getText().toString();
         Pattern patternDato = Pattern.compile( "^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
         Matcher matcherDato = patternDato.matcher(dato);
+
         boolean found = true;
         if (!matcherDato.find()) {
             dateError.setText("Må være formatert yyyy-MM-dd");
@@ -61,6 +63,7 @@ public class NyAvtaleActivity extends AppCompatActivity {
         if(!found ){
             return;
         }
+        responsAvtale.setText("Avtalen er laget");
         Avtale avtale = new Avtale(datoInput.getText().toString(),tidInput.getText().toString(),meldingInput.getText().toString());
         dbHelperAvtale.leggTilAvtale(db,avtale);
         //Prøv å legg til
@@ -124,6 +127,7 @@ public class NyAvtaleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nyavtale);
         ActionBar actionBar = getSupportActionBar();
 
+
         actionBar.setDisplayHomeAsUpEnabled(true);
         dbHelperAvtale = new DBHandlerAvtale(this);
         db=dbHelperAvtale.getWritableDatabase();
@@ -137,7 +141,7 @@ public class NyAvtaleActivity extends AppCompatActivity {
         datoInput = (EditText) findViewById(R.id.datoInput);
         tidInput = (EditText) findViewById(R.id.tidInput);
         meldingInput = (EditText) findViewById(R.id.meldingInput);
-
+        responsAvtale = (TextView) findViewById(R.id.responsNyAvtale);
         avtaleId = (EditText) findViewById(R.id.avtaleId);
 
         dateError = (TextView) findViewById(R.id.dateError);

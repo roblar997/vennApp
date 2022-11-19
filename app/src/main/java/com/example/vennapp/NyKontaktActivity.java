@@ -42,7 +42,7 @@ public class NyKontaktActivity extends AppCompatActivity {
     LinearLayout message;
     public static String PROVIDER_KONTAKT ="com.example.vennapp.contentprovider.KontaktProvider" ;
     public static final Uri CONTENT_KONTAKT_URI = Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt");
-
+    TextView  responsKontakt;
     DBHandlerKontakt dbHelper;
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
     SQLiteDatabase db;
@@ -51,6 +51,7 @@ public class NyKontaktActivity extends AppCompatActivity {
         dbHelper.leggTilKontakt(db,kontakt);
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         boolean canShare = sharedPreferences.getBoolean("canShare",false);
+        responsKontakt.setText("Kontakten er laget");
         if(canShare) {
             try {
                 ContentValues v = new ContentValues();
@@ -103,7 +104,7 @@ public class NyKontaktActivity extends AppCompatActivity {
         telefonInput = (EditText) findViewById(R.id.telefonInput);
         Button leggTilBtn =  findViewById(R.id.leggTilBtn);
 
-
+        responsKontakt = (TextView) findViewById(R.id.responsNyKontakt);
         friendId = (EditText) findViewById(R.id.kontaktId);
         message = (LinearLayout) findViewById(R.id.message);
         dbHelper = new DBHandlerKontakt(this);

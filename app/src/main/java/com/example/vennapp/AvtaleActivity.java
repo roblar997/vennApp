@@ -47,6 +47,11 @@ public class AvtaleActivity extends AppCompatActivity {
     TextView dateError;
     EditText meldingInput;
     EditText avtaleId;
+    TextView  responsAvtale;
+    String preTid;
+    String preDato;
+    String preMelding;
+
     DBHandlerKontakt dbHelperKontakt;
     DBHandlerAvtale dbHelperAvtale;
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
@@ -64,6 +69,7 @@ public class AvtaleActivity extends AppCompatActivity {
         dbHelperAvtale.slettAvtale(db,Long.parseLong(avtaleId.getText().toString()));
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         boolean canShare = sharedPreferences.getBoolean("canShare",false);
+
         if(canShare) {
             try {
                     getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()),null, null);
@@ -88,11 +94,11 @@ public class AvtaleActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent mainIntent2= new Intent(AvtaleActivity.this, MainActivity.class);
+                Intent mainIntent2= new Intent(AvtaleActivity.this, AvtaleListActivity.class);
                 startActivity(mainIntent2);
                 return true;
             case R.id.home:
-                Intent mainIntentHome= new Intent(AvtaleActivity.this, MainActivity.class);
+                Intent mainIntentHome= new Intent(AvtaleActivity.this, AvtaleListActivity.class);
                 startActivity(mainIntentHome);
                 return true;
             case R.id.kontakt:
@@ -124,7 +130,7 @@ public class AvtaleActivity extends AppCompatActivity {
         datoInput = (EditText) findViewById(R.id.datoInput);
         tidInput = (EditText) findViewById(R.id.tidInput);
         meldingInput = (EditText) findViewById(R.id.meldingInput);
-
+        responsAvtale = (TextView) findViewById(R.id.responsAvtale);
         avtaleId = (EditText) findViewById(R.id.avtaleId);
         message = (LinearLayout) findViewById(R.id.message);
         dateError = (TextView) findViewById(R.id.dateError);
@@ -134,20 +140,25 @@ public class AvtaleActivity extends AppCompatActivity {
         Button oppdaterBtn =  findViewById(R.id.oppdaterBtn);
         Button slettBtn =  findViewById(R.id.slettBtn);
         Button visalleKontakterBtn =  findViewById(R.id.visalleKontakterBtn);
+        Button resetBtn =  findViewById(R.id.resetAvtale);
 
         String avtaleIdText = getIntent().getStringExtra("avtaleId");
+
         if(avtaleIdText != null)
             avtaleId.setText(avtaleIdText);
 
         String datoText = getIntent().getStringExtra("dato");
-
+        preDato = datoText;
         if(datoText != null )
             datoInput.setText(datoText);
 
         String tidText  = getIntent().getStringExtra("tid");
+        preTid = tidText;
+
         tidInput.setText(tidText);
 
         String meldingText = getIntent().getStringExtra("melding");
+        preMelding = meldingText;
         meldingInput.setText(meldingText);
 
 
@@ -156,6 +167,8 @@ public class AvtaleActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 slettAvtale(message);
+                Intent mainIntent2= new Intent(AvtaleActivity.this, AvtaleListActivity.class);
+                startActivity(mainIntent2);
             }
         });
         oppdaterBtn.setOnClickListener(new View.OnClickListener() {
@@ -165,16 +178,25 @@ public class AvtaleActivity extends AppCompatActivity {
             }
         });
 
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datoInput.setText(preDato);
+                tidInput.setText(preTid);
+                meldingInput.setText(preMelding);
+            }
+        });
 
         visalleKontakterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String avtaleInp = avtaleId.getText().toString();
+
                 Intent mainIntent2= new Intent(AvtaleActivity.this, KontaktAvtaleActivity.class);
+                //Send verdier før endring
                 mainIntent2.putExtra("avtaleId",avtaleId.getText().toString());
-                mainIntent2.putExtra("dato",datoInput.getText().toString());
-                mainIntent2.putExtra("tid",tidInput.getText().toString());
-                mainIntent2.putExtra("melding",meldingInput.getText().toString());
+                mainIntent2.putExtra("dato",preDato);
+                mainIntent2.putExtra("tid",preTid);
+                mainIntent2.putExtra("melding",preMelding);
                 startActivity(mainIntent2);
 
 
@@ -212,6 +234,11 @@ public class AvtaleActivity extends AppCompatActivity {
         dbHelperAvtale.oppdaterAvtale(db, avtale);
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         boolean canShare = sharedPreferences.getBoolean("canShare",false);
+
+        preTid = tidInput.getText().toString();
+        preDato = datoInput.getText().toString();
+        preMelding = meldingInput.getText().toString();
+        responsAvtale.setText("Avtalen er oppdatert");
         if(canShare) {
             try {
                 ContentValues v = new ContentValues();

@@ -45,6 +45,7 @@ public class AvtaleListActivity extends AppCompatActivity {
     TextView dateError;
     EditText meldingInput;
     EditText avtaleId;
+    TextView  responsAvtale;
     DBHandlerKontakt dbHelperKontakt;
     DBHandlerAvtale dbHelperAvtale;
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
@@ -64,6 +65,7 @@ public class AvtaleListActivity extends AppCompatActivity {
         dbHelperAvtale.slettAvtale(db,Long.parseLong(id));
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         boolean canShare = sharedPreferences.getBoolean("canShare",false);
+        responsAvtale.setText("Avtalen er slettet");
         if(canShare) {
             try {
                 getContentResolver().delete(Uri.parse("content://" + PROVIDER_AVTALE + "/avtale/" + id), null, new String[]{id});
