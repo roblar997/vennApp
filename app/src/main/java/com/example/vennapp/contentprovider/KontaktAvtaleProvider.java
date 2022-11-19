@@ -114,9 +114,27 @@ public class KontaktAvtaleProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         if (uriMatcher.match(uri) == KONTAKTAVTALE) {
-            String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0],uri.getPathSegments().get(1).split("-")[1]};
-            db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ?  AND " + KEY_ID2 + " = ?", selectionArguments);
-            getContext().getContentResolver().notifyChange(uri, null);
+            if(uri.getPathSegments().get(1).contains("-")){
+                String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0],uri.getPathSegments().get(1).split("-")[1]};
+                db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ?  AND " + KEY_ID2 + " = ?", selectionArguments);
+                getContext().getContentResolver().notifyChange(uri, null);
+            }
+            else if(uri.getPathSegments().get(1).contains("*-")){
+                String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[1]};
+                db.delete(TABLE_SHARED_KONTAKTAVTALE,  KEY_ID2 + " = ?", selectionArguments);
+                getContext().getContentResolver().notifyChange(uri, null);
+            }
+            else if(uri.getPathSegments().get(1).contains("-*")){
+                String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0]};
+                db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ? ", selectionArguments);
+                getContext().getContentResolver().notifyChange(uri, null);
+            }
+            else if(uri.getPathSegments().get(1).contains("*-*")){
+                db.delete(TABLE_SHARED_KONTAKTAVTALE, null, null);
+                getContext().getContentResolver().notifyChange(uri, null);
+
+            }
+
             return 1;
         }
         if (uriMatcher.match(uri) == MKONTAKTAVTALE) {

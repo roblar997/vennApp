@@ -43,6 +43,9 @@ public class KontaktListActivity extends AppCompatActivity {
     LinearLayout message;
     public static String PROVIDER_KONTAKT ="com.example.vennapp.contentprovider.KontaktProvider" ;
     public static final Uri CONTENT_KONTAKT_URI = Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt");
+    public static String PROVIDER_KONTAKTAVTALE ="com.example.vennapp.contentprovider.KontaktAvtaleProvider" ;
+
+    public static final Uri CONTENT_KONTAKTAVTALE_URI = Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale");
 
     DBHandlerKontakt dbHelper;
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
@@ -63,6 +66,12 @@ public class KontaktListActivity extends AppCompatActivity {
                 getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKT + "/kontakt/" + id), null, new String[]{id});
 
             } catch (Exception ex) {
+
+            }
+            try {
+                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/" + id+"-*"), null, new String[]{id});
+            }
+            catch (Exception ex) {
 
             }
         }

@@ -55,6 +55,9 @@ public class KontaktActivity extends AppCompatActivity {
     DBHandlerKontakt dbHelper;
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
     SQLiteDatabase db;
+    public static String PROVIDER_KONTAKTAVTALE ="com.example.vennapp.contentprovider.KontaktAvtaleProvider" ;
+
+    public static final Uri CONTENT_KONTAKTAVTALE_URI = Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale");
 
 
     public void slettKontakt(LinearLayout layout) {
@@ -71,6 +74,12 @@ public class KontaktActivity extends AppCompatActivity {
                 getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKT + "/kontakt/" + friendId.getText().toString()), null, null);
 
             } catch (Exception ex) {
+            }
+            try {
+                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/" + String.valueOf(kontaktid)+"-*"), null, new String[]{String.valueOf(kontaktid)});
+            }
+            catch (Exception ex) {
+
             }
         }
     }

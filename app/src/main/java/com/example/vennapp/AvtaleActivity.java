@@ -57,6 +57,9 @@ public class AvtaleActivity extends AppCompatActivity {
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
     LinearLayout message;
     public static String PROVIDER_AVTALE ="com.example.vennapp.contentprovider.AvtaleProvider" ;
+    public static String PROVIDER_KONTAKTAVTALE ="com.example.vennapp.contentprovider.KontaktAvtaleProvider" ;
+
+    public static final Uri CONTENT_KONTAKTAVTALE_URI = Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale");
 
     SQLiteDatabase db;
 
@@ -66,20 +69,29 @@ public class AvtaleActivity extends AppCompatActivity {
         if(avtaleId.getText().toString().isEmpty())
             return;
         dbHelperKontaktAvtale.fjernAlleKontaktFraAvtale(db,Long.parseLong(avtaleId.getText().toString()));
+
         dbHelperAvtale.slettAvtale(db,Long.parseLong(avtaleId.getText().toString()));
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         boolean canShare = sharedPreferences.getBoolean("canShare",false);
 
         if(canShare) {
             try {
-                    getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()),null, null);
+                getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()),null, null);
             } catch (Exception ex) {
 
             }
+
+            try {
+                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/*-" + String.valueOf(avtaleId)), null, new String[]{String.valueOf(avtaleId)});
+            }
+            catch (Exception ex) {
+
+            }
         }
-
-
     }
+
+
+
 
 
     @Override

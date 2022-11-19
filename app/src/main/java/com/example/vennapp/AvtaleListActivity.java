@@ -46,6 +46,9 @@ public class AvtaleListActivity extends AppCompatActivity {
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
     LinearLayout message;
     public static String PROVIDER_AVTALE ="com.example.vennapp.contentprovider.AvtaleProvider" ;
+    public static String PROVIDER_KONTAKTAVTALE ="com.example.vennapp.contentprovider.KontaktAvtaleProvider" ;
+
+    public static final Uri CONTENT_KONTAKTAVTALE_URI = Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale");
 
     SQLiteDatabase db;
 
@@ -64,6 +67,12 @@ public class AvtaleListActivity extends AppCompatActivity {
             try {
                 getContentResolver().delete(Uri.parse("content://" + PROVIDER_AVTALE + "/avtale/" + id), null, new String[]{id});
             } catch (Exception ex) {
+
+            }
+            try {
+                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/*-" + id), null, new String[]{String.valueOf(id)});
+            }
+            catch (Exception ex) {
 
             }
         }
@@ -227,7 +236,7 @@ public class AvtaleListActivity extends AppCompatActivity {
                         LinearLayout.LayoutParams.MATCH_PARENT
                 ));
                 slett.setText("Slett");
-                
+
                 slett.setBackgroundColor(Color.parseColor("#BF2519"));
                 slett.setTextColor(Color.WHITE);
                 slett.setLayoutParams(new LinearLayout.LayoutParams(
