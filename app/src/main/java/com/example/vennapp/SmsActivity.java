@@ -61,7 +61,8 @@ public class SmsActivity extends AppCompatActivity {
                 List<Kontakt> kontakter = dbHelperKontaktAvtale.finnAlleKontakterGittAvtale(db, x.get_ID().longValue());
 
                 for (Kontakt y : kontakter) {
-                    smsMan.sendTextMessage(y.getTelefonNummer(), null,melding, null, null);
+                    if(y.getTelefonNummer() != null && !y.getTelefonNummer().isEmpty())
+                         smsMan.sendTextMessage(y.getTelefonNummer(), null,melding, null, null);
 
                 };
 
