@@ -49,9 +49,7 @@ public class NyAvtaleActivity extends AppCompatActivity {
         Pattern patternDato = Pattern.compile( "^[0-9]{4}-[0-9]{2}-[0-9]{2}$");
         Matcher matcherDato = patternDato.matcher(dato);
 
-        datoInput.setText("");
-        tidInput.setText("");
-        meldingInput.setText("");
+
 
         boolean found = true;
         if (!matcherDato.find()) {
@@ -88,6 +86,9 @@ public class NyAvtaleActivity extends AppCompatActivity {
 
 
             }
+            datoInput.setText("");
+            tidInput.setText("");
+            meldingInput.setText("");
         }
 
     }
