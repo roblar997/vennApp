@@ -289,7 +289,7 @@ public class KontaktListActivity extends AppCompatActivity {
 
         actionBar.setDisplayHomeAsUpEnabled(true);
         message = (LinearLayout) findViewById(R.id.kontakter);
-
+        responsKontakt = (TextView) findViewById(R.id.responsKontaktList);
         dbHelper = new DBHandlerKontakt(this);
         db=dbHelper.getWritableDatabase();
         Button nyKontaktBtn =  findViewById(R.id.nyKontakt);

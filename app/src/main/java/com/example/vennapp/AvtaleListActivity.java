@@ -301,7 +301,7 @@ public class AvtaleListActivity extends AppCompatActivity {
 
         dbHelperKontaktAvtale = new DBHandlerKontaktAvtale(this);
         db=dbHelperKontaktAvtale.getWritableDatabase();
-
+        responsAvtale = (TextView) findViewById(R.id.responsAvtaleList);
         message = (LinearLayout) findViewById(R.id.message);
         Button nyAvtaleBtn =  findViewById(R.id.nyAvtale);
         nyAvtaleBtn.setOnClickListener(new View.OnClickListener() {

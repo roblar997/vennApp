@@ -179,6 +179,7 @@ public class KontaktActivity extends AppCompatActivity {
         preFornavn = fornavnInput.getText().toString();
         preEtternavn = etternavnInput.getText().toString();
         preTelefon = telefonInput.getText().toString();
+
         if(canShare) {
             ContentValues v = new ContentValues();
             try {
