@@ -63,11 +63,11 @@ public class NotifictionSendService extends Service {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pIntent2).build();
-     //   Notification notifikasjonSms = new NotificationCompat.Builder(this,"MinKanal").setContentIntent(pIntentsms).build();
+
         notifikasjon.flags |= Notification.FLAG_AUTO_CANCEL;
 
         notificationManager.notify(88, notifikasjon);
-     //   notificationManager.notify(88, notifikasjonSms);
+
         return super.onStartCommand(intent, flags, startId);
     }
 }

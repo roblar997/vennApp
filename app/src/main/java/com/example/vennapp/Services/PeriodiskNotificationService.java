@@ -22,7 +22,7 @@ public class PeriodiskNotificationService extends Service {
     public IBinder onBind(Intent intent) {return null;}
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        java.util.Calendar cal = Calendar.getInstance();
+
         Intent i = new Intent(this, NotifictionSendService.class);
         PendingIntent pintent = PendingIntent.getService(this, 0, i, 0);
 
@@ -39,10 +39,11 @@ public class PeriodiskNotificationService extends Service {
         calendar.set(Calendar.YEAR,localDate.getYear());
         calendar.set(Calendar.MONTH,localDate.getMonthValue()-1);
         calendar.set(Calendar.DAY_OF_MONTH,localDate.getDayOfMonth());
-        calendar.set(Calendar.HOUR_OF_DAY, localTime.getHour());
+
+        calendar.set(Calendar.HOUR_OF_DAY,localTime.getHour()-1);
         calendar.set(Calendar.MINUTE, localTime.getMinute());
 
-            alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pintent);
+            alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60 * 1000, pintent);
 
         return super.onStartCommand(intent, flags, startId);}
 }
