@@ -39,19 +39,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AvtaleListActivity extends AppCompatActivity {
-    EditText tidInput;
-    EditText datoInput;
-    TextView timeError;
-    TextView dateError;
-    EditText meldingInput;
-    EditText avtaleId;
+
     TextView  responsAvtale;
     DBHandlerKontakt dbHelperKontakt;
     DBHandlerAvtale dbHelperAvtale;
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
     LinearLayout message;
     public static String PROVIDER_AVTALE ="com.example.vennapp.contentprovider.AvtaleProvider" ;
-    public static final Uri CONTENT_AVTALE_URI = Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale");
 
     SQLiteDatabase db;
 

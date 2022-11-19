@@ -27,7 +27,7 @@ public class KontaktProvider extends ContentProvider {
 
     KontaktProvider.DatabaseHelper DBhelper;
     SQLiteDatabase db;
-    public static final Uri CONTENT_URI = Uri.parse("content://" + PROVIDER + "/kontakt");
+
     private static final UriMatcher uriMatcher;
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);

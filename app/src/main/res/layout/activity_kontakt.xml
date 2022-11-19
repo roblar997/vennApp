@@ -25,14 +25,14 @@
             <TextView
                 android:id="@+id/responsKontakt"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="3dp"
                 android:textColor="#3A973E"
                 android:textSize="24sp" />
 
             <EditText
                 android:id="@+id/kontaktId"
                 android:layout_width="match_parent"
-                android:layout_height="23dp"
+                android:layout_height="6dp"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:visibility="invisible"

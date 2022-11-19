@@ -47,24 +47,7 @@ public class KontaktListActivity extends AppCompatActivity {
     DBHandlerKontakt dbHelper;
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
     SQLiteDatabase db;
-    public void leggtil(LinearLayout layout) {
-        Kontakt kontakt = new Kontakt(fornavnInput.getText().toString(),etternavnInput.getText().toString(),telefonInput.getText().toString());
-        dbHelper.leggTilKontakt(db,kontakt);
-        try{
-            ContentValues v=new ContentValues();
 
-
-            v.put("Fornavn",fornavnInput.getText().toString());
-            v.put("Etternavn",etternavnInput.getText().toString());
-            v.put("Telefon",telefonInput.getText().toString());
-            getContentResolver().insert(CONTENT_KONTAKT_URI,v);
-        }
-        catch (Exception ex){
-
-        }
-
-        visalle(layout);
-    }
 
     public void slettKontakt(String id) {
         if(id == null || id.isEmpty())
