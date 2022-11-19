@@ -52,6 +52,9 @@ public class NyKontaktActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         boolean canShare = sharedPreferences.getBoolean("canShare",false);
         responsKontakt.setText("Kontakten er laget");
+        telefonInput.setText("");
+        fornavnInput.setText("");
+        etternavnInput.setText("");
         if(canShare) {
             try {
                 ContentValues v = new ContentValues();
