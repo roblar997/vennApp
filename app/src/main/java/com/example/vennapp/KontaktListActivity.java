@@ -342,6 +342,7 @@ public class KontaktListActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         dbHelper.close();
+        dbHelperKontaktAvtale.close();
         super.onDestroy();
     }
 }
