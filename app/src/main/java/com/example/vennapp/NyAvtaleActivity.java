@@ -67,6 +67,7 @@ public class NyAvtaleActivity extends AppCompatActivity {
         else
             timeError.setText("");
         if(!found ){
+            responsAvtale.setText("");
             return;
         }
         responsAvtale.setText("Avtalen er laget");

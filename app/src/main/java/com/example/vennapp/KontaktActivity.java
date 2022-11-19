@@ -206,6 +206,7 @@ public class KontaktActivity extends AppCompatActivity {
         else
             telefonError.setText("");
         if(!found ){
+            responsKontakt.setText("");
             return;
         }
         Kontakt kontakt = new Kontakt();

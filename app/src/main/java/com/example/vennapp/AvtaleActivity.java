@@ -228,6 +228,7 @@ public class AvtaleActivity extends AppCompatActivity {
         else
             timeError.setText("");
         if(!found ){
+            responsAvtale.setText("");
             return;
         }
 

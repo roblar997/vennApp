@@ -61,6 +61,7 @@ public class NyKontaktActivity extends AppCompatActivity {
         boolean found = true;
         if (!matcherFornavn.find()) {
             fornavnError.setText("Ugyldig fornavn");
+
             found = false;
         }
         else
@@ -83,6 +84,7 @@ public class NyKontaktActivity extends AppCompatActivity {
         else
             telefonError.setText("");
         if(!found ){
+            responsKontakt.setText("");
             return;
         }
         Kontakt kontakt = new Kontakt(fornavnInput.getText().toString(),etternavnInput.getText().toString(),telefonInput.getText().toString());
