@@ -33,12 +33,17 @@ import com.example.vennapp.database.DBHandlerKontaktAvtale;
 import com.example.vennapp.database.models.Kontakt;
 
 import java.util.List;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 public class NyKontaktActivity extends AppCompatActivity {
     EditText fornavnInput;
     EditText etternavnInput;
     EditText friendId;
     EditText telefonInput;
+    TextView fornavnError;
+    TextView etternavnError;
+
+    TextView telefonError;
     LinearLayout message;
     public static String PROVIDER_KONTAKT ="com.example.vennapp.contentprovider.KontaktProvider" ;
     public static final Uri CONTENT_KONTAKT_URI = Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt");
@@ -47,6 +52,39 @@ public class NyKontaktActivity extends AppCompatActivity {
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
     SQLiteDatabase db;
     public void leggtil(LinearLayout layout) {
+
+        Pattern patternFornavn = Pattern.compile( "^[A-Za-z]{2,30}$");
+        Matcher matcherFornavn = patternFornavn.matcher(fornavnInput.getText().toString());
+
+
+
+        boolean found = true;
+        if (!matcherFornavn.find()) {
+            fornavnError.setText("Ugyldig fornavn");
+            found = false;
+        }
+        else
+            fornavnError.setText("");
+        Pattern patternEtternavn = Pattern.compile( "^[A-Za-z]{2,30}$");
+        Matcher matcherEtternavn = patternEtternavn.matcher(etternavnInput.getText().toString());
+        if (!matcherEtternavn.find()) {
+            etternavnError.setText("Ugyldig etternavn");
+            found = false;
+        }
+        else
+            etternavnError.setText("");
+
+        Pattern patternTelefon = Pattern.compile( "^[+]?[0-9]{3,40}$");
+        Matcher matcherTelefon = patternTelefon.matcher(telefonInput.getText().toString());
+        if (!matcherTelefon.find()) {
+            telefonError.setText("Ugyldig telefon nummer");
+            found = false;
+        }
+        else
+            telefonError.setText("");
+        if(!found ){
+            return;
+        }
         Kontakt kontakt = new Kontakt(fornavnInput.getText().toString(),etternavnInput.getText().toString(),telefonInput.getText().toString());
         dbHelper.leggTilKontakt(db,kontakt);
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
@@ -106,6 +144,11 @@ public class NyKontaktActivity extends AppCompatActivity {
         fornavnInput = (EditText) findViewById(R.id.fornavnInput);
         etternavnInput = (EditText) findViewById(R.id.etternavnInput);
         telefonInput = (EditText) findViewById(R.id.telefonInput);
+
+        fornavnError= (TextView) findViewById(R.id.fornavnError);
+        etternavnError = (TextView) findViewById(R.id.etternavnError);
+        telefonError = (TextView) findViewById(R.id.telefonError);
+
         Button leggTilBtn =  findViewById(R.id.leggTilBtn);
 
         responsKontakt = (TextView) findViewById(R.id.responsNyKontakt);

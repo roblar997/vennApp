@@ -56,12 +56,16 @@ public class NyAvtaleActivity extends AppCompatActivity {
             dateError.setText("Må være formatert yyyy-MM-dd");
             found = false;
         }
+        else
+            dateError.setText("");
         Pattern patternTid = Pattern.compile( "^[0-9]{2}:[0-9]{2}:[0-9]{2}$");
         Matcher matcherTid = patternTid.matcher(tid);
         if (!matcherTid.find()) {
             timeError.setText("Må være formatert HH:mm:ss");
             found = false;
         }
+        else
+            timeError.setText("");
         if(!found ){
             return;
         }

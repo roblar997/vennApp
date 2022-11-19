@@ -34,11 +34,16 @@ import com.example.vennapp.database.DBHandlerKontaktAvtale;
 import com.example.vennapp.database.models.Kontakt;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class KontaktActivity extends AppCompatActivity {
     EditText fornavnInput;
     EditText etternavnInput;
     EditText friendId;
+    TextView fornavnError;
+    TextView etternavnError;
+    TextView telefonError;
     EditText telefonInput;
     LinearLayout message;
     String preFornavn;
@@ -106,6 +111,10 @@ public class KontaktActivity extends AppCompatActivity {
         etternavnInput = (EditText) findViewById(R.id.etternavnInput);
         telefonInput = (EditText) findViewById(R.id.telefonInput);
 
+        fornavnError = (TextView) findViewById(R.id.fornavnError);
+        etternavnError = (TextView) findViewById(R.id.etternavnError);
+        telefonError = (TextView) findViewById(R.id.telefonError);
+
         Button oppdaterBtn =  findViewById(R.id.oppdaterBtn);
         Button slettBtn =  findViewById(R.id.slettBtn);
         Button resetBtn =  findViewById(R.id.resetKontakt);
@@ -166,6 +175,39 @@ public class KontaktActivity extends AppCompatActivity {
     public void oppdater(LinearLayout layout) {
         if(friendId.getText().toString().isEmpty())
             return;
+
+        Pattern patternFornavn = Pattern.compile( "^[A-Za-z]{2,30}$");
+        Matcher matcherFornavn = patternFornavn.matcher(fornavnInput.getText().toString());
+
+
+
+        boolean found = true;
+        if (!matcherFornavn.find()) {
+            fornavnError.setText("Ugyldig fornavn");
+            found = false;
+        }
+        else
+            fornavnError.setText("");
+        Pattern patternEtternavn = Pattern.compile( "^[A-Za-z]{2,30}$");
+        Matcher matcherEtternavn = patternEtternavn.matcher(etternavnInput.getText().toString());
+        if (!matcherEtternavn.find()) {
+            etternavnError.setText("Ugyldig etternavn");
+            found = false;
+        }
+        else
+            etternavnError.setText("");
+
+        Pattern patternTelefon = Pattern.compile( "^[+]?[0-9]{3,40}$");
+        Matcher matcherTelefon = patternTelefon.matcher(telefonInput.getText().toString());
+        if (!matcherTelefon.find()) {
+            telefonError.setText("Ugyldig telefon nummer");
+            found = false;
+        }
+        else
+            telefonError.setText("");
+        if(!found ){
+            return;
+        }
         Kontakt kontakt = new Kontakt();
 
         kontakt.setFornavn(fornavnInput.getText().toString());
