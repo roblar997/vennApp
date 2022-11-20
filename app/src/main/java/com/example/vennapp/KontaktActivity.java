@@ -68,8 +68,7 @@ public class KontaktActivity extends AppCompatActivity {
         dbHelper.slettKontakt(db, kontaktid);
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
 
-        boolean canShare = sharedPreferences.getBoolean("canShare", false);
-        if (canShare) {
+
             try {
                 getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKT + "/kontakt/" + friendId.getText().toString()), null, null);
 
@@ -80,7 +79,7 @@ public class KontaktActivity extends AppCompatActivity {
             }
             catch (Exception ex) {
 
-            }
+
         }
     }
 
@@ -226,13 +225,13 @@ public class KontaktActivity extends AppCompatActivity {
         kontakt.set_ID(Long.parseLong(friendId.getText().toString()));
         dbHelper.oppdaterKontakt(db, kontakt);
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        boolean canShare = sharedPreferences.getBoolean("canShare",false);
+
         responsKontakt.setText("Kontakten er oppdatert");
         preFornavn = fornavnInput.getText().toString();
         preEtternavn = etternavnInput.getText().toString();
         preTelefon = telefonInput.getText().toString();
 
-        if(canShare) {
+
             ContentValues v = new ContentValues();
             try {
                 v.put("_ID", Long.parseLong(friendId.getText().toString()));
@@ -244,7 +243,7 @@ public class KontaktActivity extends AppCompatActivity {
             } catch (Exception ex) {
 
             }
-        }
+
 
 
     }

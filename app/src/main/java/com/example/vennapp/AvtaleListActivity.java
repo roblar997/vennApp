@@ -61,9 +61,9 @@ public class AvtaleListActivity extends AppCompatActivity {
         dbHelperKontaktAvtale.fjernAlleKontaktFraAvtale(db,Long.parseLong(id));
         dbHelperAvtale.slettAvtale(db,Long.parseLong(id));
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        boolean canShare = sharedPreferences.getBoolean("canShare",false);
+
         responsAvtale.setText("Avtalen er slettet");
-        if(canShare) {
+
             try {
                 getContentResolver().delete(Uri.parse("content://" + PROVIDER_AVTALE + "/avtale/" + id), null, new String[]{id});
             } catch (Exception ex) {
@@ -74,7 +74,7 @@ public class AvtaleListActivity extends AppCompatActivity {
             }
             catch (Exception ex) {
 
-            }
+
         }
         visalle(message);
     }

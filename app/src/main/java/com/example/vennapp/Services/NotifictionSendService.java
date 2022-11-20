@@ -44,19 +44,13 @@ public class NotifictionSendService extends Service {
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         Intent i2 = new Intent(this, ResultatActivity.class);
-        Intent iSMS = new Intent(this, SmsActivity.class);
 
 
         NotificationManager notificationManager = (NotificationManager)  getSystemService(NOTIFICATION_SERVICE);
         Toast.makeText(getApplicationContext(), "Du har snart en avtale ", Toast.LENGTH_SHORT).show();
 
         PendingIntent pIntent2 = PendingIntent.getActivity(this, 0, i2, 0);
-        PendingIntent pIntentsms = PendingIntent.getActivity(this, 0, iSMS, 0);
-        try {
-            pIntentsms.send();
-        } catch (PendingIntent.CanceledException e) {
-            e.printStackTrace();
-        }
+
         Notification notifikasjon = new NotificationCompat.Builder(this,"MinKanal3")
                 .setContentTitle("Snart avtale")
                 .setContentText("Er snart en avtale")

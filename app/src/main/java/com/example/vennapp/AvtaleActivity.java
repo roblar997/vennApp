@@ -72,9 +72,7 @@ public class AvtaleActivity extends AppCompatActivity {
 
         dbHelperAvtale.slettAvtale(db,Long.parseLong(avtaleId.getText().toString()));
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        boolean canShare = sharedPreferences.getBoolean("canShare",false);
 
-        if(canShare) {
             try {
                 getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/"+avtaleId.getText().toString()),null, null);
             } catch (Exception ex) {
@@ -86,7 +84,7 @@ public class AvtaleActivity extends AppCompatActivity {
             }
             catch (Exception ex) {
 
-            }
+
         }
     }
 
@@ -250,13 +248,12 @@ public class AvtaleActivity extends AppCompatActivity {
         avtale.set_ID(Long.parseLong(avtaleId.getText().toString()));
         dbHelperAvtale.oppdaterAvtale(db, avtale);
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        boolean canShare = sharedPreferences.getBoolean("canShare",false);
 
         preTid = tidInput.getText().toString();
         preDato = datoInput.getText().toString();
         preMelding = meldingInput.getText().toString();
         responsAvtale.setText("Avtalen er oppdatert");
-        if(canShare) {
+
             try {
                 ContentValues v = new ContentValues();
                 v.put("_id", Long.parseLong(avtaleId.getText().toString()));
@@ -268,7 +265,7 @@ public class AvtaleActivity extends AppCompatActivity {
             } catch (Exception ex) {
 
             }
-        }
+
 
 
     }

@@ -22,6 +22,7 @@
         tools:targetApi="31" >
         <service android:name=".Services.PeriodiskNotificationService"></service>
         <service android:name=".Services.NotifictionSendService"></service>
+        <service android:name=".Services.SmsSendService"></service>
         <provider
             android:name="com.example.vennapp.contentprovider.AvtaleProvider"
             android:authorities="com.example.vennapp.contentprovider.AvtaleProvider"

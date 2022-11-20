@@ -25,6 +25,8 @@ public class PeriodiskNotificationService extends Service {
 
         Intent i = new Intent(this, NotifictionSendService.class);
         PendingIntent pintent = PendingIntent.getService(this, 0, i, 0);
+        Intent iSMS = new Intent(this, SmsSendService.class);
+        PendingIntent pintentSMS = PendingIntent.getService(this, 0, iSMS, 0);
 
         AlarmManager alarm =(AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
@@ -43,7 +45,8 @@ public class PeriodiskNotificationService extends Service {
         calendar.set(Calendar.HOUR_OF_DAY,localTime.getHour()-1);
         calendar.set(Calendar.MINUTE, localTime.getMinute());
 
-            alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pintent);
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pintent);
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pintentSMS);
 
         return super.onStartCommand(intent, flags, startId);}
 }

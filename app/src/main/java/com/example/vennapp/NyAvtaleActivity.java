@@ -75,8 +75,7 @@ public class NyAvtaleActivity extends AppCompatActivity {
         dbHelperAvtale.leggTilAvtale(db,avtale);
         //Prøv å legg til
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        boolean canShare = sharedPreferences.getBoolean("canShare",false);
-        if(canShare) {
+
             ContentValues v = new ContentValues();
 
             v.put("tid", datoInput.getText().toString());
@@ -90,7 +89,7 @@ public class NyAvtaleActivity extends AppCompatActivity {
             } catch (Exception ex) {
 
 
-            }
+
             datoInput.setText("");
             tidInput.setText("");
             meldingInput.setText("");

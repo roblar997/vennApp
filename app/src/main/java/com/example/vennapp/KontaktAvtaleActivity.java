@@ -60,14 +60,13 @@ public class KontaktAvtaleActivity extends AppCompatActivity {
         KontaktAvtale kontaktAvtale = new KontaktAvtale(kontaktId,avtaleId);
         dbHelperKontaktAvtale.fjernKontaktFraAvtale(db,kontaktAvtale);
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        boolean canShare = sharedPreferences.getBoolean("canShare",false);
-        if(canShare) {
+
             try {
                 getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/" + Long.toString(kontaktId) + "/" + Long.toString(avtaleId)), null, null);
             } catch (Exception ex) {
 
             }
-        }
+
         visalle(layout);
     }
     public void visalleKontakterMedAvtale(LinearLayout layout, Long avtaleIdInput) {
@@ -406,8 +405,7 @@ public class KontaktAvtaleActivity extends AppCompatActivity {
         KontaktAvtale kontaktavtale = new KontaktAvtale(kontaktId,avtaleId);
         dbHelperKontaktAvtale.leggTilKontaktTilAvtale(db,kontaktavtale);
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        boolean canShare = sharedPreferences.getBoolean("canShare",false);
-        if(canShare) {
+
             //Prøv å legg til
             try {
 
@@ -419,7 +417,7 @@ public class KontaktAvtaleActivity extends AppCompatActivity {
 
             } catch (Exception ex) {
 
-            }
+
         }
         visalleKontakterMedAvtale(layout,avtaleId);
     }

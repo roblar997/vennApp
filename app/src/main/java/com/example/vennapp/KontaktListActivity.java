@@ -59,9 +59,7 @@ public class KontaktListActivity extends AppCompatActivity {
         dbHelperKontaktAvtale.fjernAlleAvtalerFraKontakt(db,kontaktid);
         dbHelper.slettKontakt(db,kontaktid);
         responsKontakt.setText("Kontakten er slettet");
-        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        boolean canShare = sharedPreferences.getBoolean("canShare",false);
-        if(canShare) {
+
             try {
                 getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKT + "/kontakt/" + id), null, new String[]{id});
 
@@ -74,7 +72,7 @@ public class KontaktListActivity extends AppCompatActivity {
             catch (Exception ex) {
 
             }
-        }
+
         visalle(message);
     }
     public void visalle(LinearLayout layout) {

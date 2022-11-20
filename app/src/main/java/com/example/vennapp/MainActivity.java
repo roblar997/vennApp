@@ -38,6 +38,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.vennapp.Services.NotifictionSendService;
 import com.example.vennapp.Services.PeriodiskNotificationService;
+import com.example.vennapp.Services.SmsSendService;
 import com.example.vennapp.database.DBHandlerAvtale;
 import com.example.vennapp.database.DBHandlerKontakt;
 import com.example.vennapp.database.DBHandlerKontaktAvtale;
@@ -70,17 +71,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void stoppPeriodisk(View v) {
-        Intent i = new Intent(this, NotifictionSendService.class);
+    public void stoppSMS(View v) {
+        Intent i = new Intent(this, SmsSendService.class);
         PendingIntent pintent = PendingIntent.getService(this, 0, i, 0);
         AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         if(alarm != null) {
             alarm.cancel(pintent);
         }
-        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("canShare",false);
-        editor.apply();
+
         try{
             getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/#"),null, null);
 
@@ -219,8 +217,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button avtaleBtn = findViewById(R.id.avtaleBtn);
         Button kontaktBtn = findViewById(R.id.kontaktBtn);
-        Button stopPeriodiskServiceBtn = findViewById(R.id.stopPeriodiskServiceBtn);
-        Button startPeriodiskServiceBtn = findViewById(R.id.startPeriodiskServiceBtn);
+        Button stopSMSServiceBtn = findViewById(R.id.stopPeriodiskServiceBtn);
+        Button startSMSServiceBtn = findViewById(R.id.startPeriodiskServiceBtn);
 
 
         dbHelperAvtale = new DBHandlerAvtale(this);
@@ -246,14 +244,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        stopPeriodiskServiceBtn.setOnClickListener(new View.OnClickListener() {
+        stopSMSServiceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               stoppPeriodisk(view);
+                stoppSMS(view);
 
             }
         });
-        startPeriodiskServiceBtn.setOnClickListener(new View.OnClickListener() {
+        startSMSServiceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startService(view);

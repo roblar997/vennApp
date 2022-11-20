@@ -90,10 +90,10 @@ public class NyKontaktActivity extends AppCompatActivity {
         Kontakt kontakt = new Kontakt(fornavnInput.getText().toString(),etternavnInput.getText().toString(),telefonInput.getText().toString());
         dbHelper.leggTilKontakt(db,kontakt);
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        boolean canShare = sharedPreferences.getBoolean("canShare",false);
+
         responsKontakt.setText("Kontakten er laget");
 
-        if(canShare) {
+
             try {
                 ContentValues v = new ContentValues();
 
@@ -105,7 +105,7 @@ public class NyKontaktActivity extends AppCompatActivity {
             } catch (Exception ex) {
 
             }
-        }
+
         telefonInput.setText("");
         fornavnInput.setText("");
         etternavnInput.setText("");
