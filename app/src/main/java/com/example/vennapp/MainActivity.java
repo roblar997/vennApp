@@ -79,27 +79,7 @@ public class MainActivity extends AppCompatActivity {
             alarm.cancel(pintent);
         }
 
-        try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKT + "/kontakt/#"),null, null);
 
-        }
-        catch (Exception ex){
-
-        }
-        try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale/#"),null, null);
-
-        }
-        catch (Exception ex){
-
-        }
-        try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale/*/*"),null, null);
-
-        }
-        catch (Exception ex){
-
-        }
     }
     private void createNotificationChannel() {
         CharSequence name = getString(R.string.channel_name);
@@ -122,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt("hour", hour);
         editor.putInt("minute", minute);
         editor.putString("message", message);
-        editor.putBoolean("canShare",true);
+
         editor.apply();
 
 

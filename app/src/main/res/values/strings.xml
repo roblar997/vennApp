@@ -3,7 +3,7 @@
     <string name="channel_name">Min Kanal</string>
     <string name="channel_description">Min Beskrivelse</string>
     <integer name="hourNotify">15</integer>
-    <integer name="minuteNotify">26</integer>
+    <integer name="minuteNotify">47</integer>
     <string name="message">Hei, vi har snart en avtale</string>
 
 </resources>
