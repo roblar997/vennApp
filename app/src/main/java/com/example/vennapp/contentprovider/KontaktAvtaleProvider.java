@@ -24,8 +24,10 @@ public class KontaktAvtaleProvider extends ContentProvider {
     public final static String PROVIDER = "com.example.vennapp.contentprovider.KontaktAvtaleProvider";
     private static final int KONTAKTAVTALE = 1;
     private static final int MKONTAKTAVTALE = 2;
-    private static final int KONTAKTAVTALEWITHID = 3;
-
+    private static final int KONTAKTAVTALESUB1 = 3;
+    private static final int KONTAKTAVTALESUB2 = 4;
+    private static final int KONTAKTAVTALESUB3 = 5;
+    private static final int KONTAKTAVTALESUB4 = 6;
 
     KontaktAvtaleProvider.DatabaseHelper DBhelper;
     SQLiteDatabase db;
@@ -34,8 +36,10 @@ public class KontaktAvtaleProvider extends ContentProvider {
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(PROVIDER, "kontaktavtale", MKONTAKTAVTALE);
-        uriMatcher.addURI(PROVIDER, "kontaktavtale/#", KONTAKTAVTALE);
-        uriMatcher.addURI(PROVIDER, "kontaktavtale/*", KONTAKTAVTALEWITHID);
+        uriMatcher.addURI(PROVIDER, "kontaktavtale/#-#", KONTAKTAVTALESUB1);
+        uriMatcher.addURI(PROVIDER, "kontaktavtale/*-#", KONTAKTAVTALESUB2);
+        uriMatcher.addURI(PROVIDER, "kontaktavtale/#-*", KONTAKTAVTALESUB3);
+        uriMatcher.addURI(PROVIDER, "kontaktavtale/*-*", KONTAKTAVTALESUB4);
     }
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context) {
@@ -70,7 +74,7 @@ public class KontaktAvtaleProvider extends ContentProvider {
     @Override
     public String getType(Uri uri) {
         switch (uriMatcher.match(uri)) {
-            case MKONTAKTAVTALE | KONTAKTAVTALEWITHID:
+            case MKONTAKTAVTALE | KONTAKTAVTALESUB1  | KONTAKTAVTALESUB2  | KONTAKTAVTALESUB3  | KONTAKTAVTALESUB4:
                 return "vnd.android.cursor.dir/vnd.example.kontaktavtale";
             case KONTAKTAVTALE  :
                 return "vnd.android.cursor.item/vnd.example.kontaktavtale";
@@ -114,47 +118,40 @@ public class KontaktAvtaleProvider extends ContentProvider {
     }
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        Log.d("Got path segment part 1 in delete: ", uri.getPathSegments().get(1) + " " + (uriMatcher.match(uri) == KONTAKTAVTALEWITHID));
-        if (uriMatcher.match(uri) == KONTAKTAVTALE ) {
+        Log.d("Got path segment part 1 in delete: ", uri.getPathSegments().get(1) + " " );
 
+        if (uriMatcher.match(uri) == KONTAKTAVTALESUB4) {
 
-
-            return 1;
+            Log.d("Case delete all rows: ", uri.getPathSegments().get(1));
+            int res = db.delete(TABLE_SHARED_KONTAKTAVTALE, null, null);
+            getContext().getContentResolver().notifyChange(uri, null);
+            return res;
         }
-        else if (uriMatcher.match(uri) == MKONTAKTAVTALE || uriMatcher.match(uri) == KONTAKTAVTALEWITHID) {
-            if(uri.getPathSegments().get(1).contains("*-*")){
-                Log.d("Case delete all rows: ", uri.getPathSegments().get(1));
-                db.delete(TABLE_SHARED_KONTAKTAVTALE, null, null);
-                getContext().getContentResolver().notifyChange(uri, null);
-
-            }
-            else if(uri.getPathSegments().get(1).contains("*-")){
-                Log.d("Case delete all rows with spesific avtale: ", uri.getPathSegments().get(1));
-                String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[1]};
-                db.delete(TABLE_SHARED_KONTAKTAVTALE,  KEY_ID2 + " = ?", selectionArguments);
-                getContext().getContentResolver().notifyChange(uri, null);
-            }
-            else if(uri.getPathSegments().get(1).contains("-*")){
-                Log.d("Case delete all rows with spesific contact: ", uri.getPathSegments().get(1));
-                String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0]};
-                db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ? ", selectionArguments);
-                getContext().getContentResolver().notifyChange(uri, null);
-            }
-
-            else if(uri.getPathSegments().get(1).contains("-")){
-                Log.d("Case delete one row: ", uri.getPathSegments().get(1));
-                String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0],uri.getPathSegments().get(1).split("-")[1]};
-                db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ?  AND " + KEY_ID2 + " = ?", selectionArguments);
-                getContext().getContentResolver().notifyChange(uri, null);
-            }
-            else{
-
-            }
-            return 2;
+        else if (uriMatcher.match(uri) == KONTAKTAVTALESUB3) {
+            Log.d("Case delete all rows with spesific avtale: ", uri.getPathSegments().get(1));
+            String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[1]};
+            int res = db.delete(TABLE_SHARED_KONTAKTAVTALE,  KEY_ID2 + " = ?", selectionArguments);
+            getContext().getContentResolver().notifyChange(uri, null);
+            return res;
         }
-        else{
-
+        else if (uriMatcher.match(uri) == KONTAKTAVTALESUB2) {
+            Log.d("Case delete all rows with spesific contact: ", uri.getPathSegments().get(1));
+            String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0]};
+            int res = db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ? ", selectionArguments);
+            getContext().getContentResolver().notifyChange(uri, null);
+            return res;
         }
+
+        else if (uriMatcher.match(uri) == KONTAKTAVTALESUB1) {
+            Log.d("Case delete one row: ", uri.getPathSegments().get(1));
+            String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0],uri.getPathSegments().get(1).split("-")[1]};
+            int res = db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ?  AND " + KEY_ID2 + " = ?", selectionArguments);
+            getContext().getContentResolver().notifyChange(uri, null);
+            return res;
+        }
+
         return 0;
     }
+
+
 }
