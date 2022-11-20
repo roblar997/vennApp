@@ -36,10 +36,10 @@ public class KontaktAvtaleProvider extends ContentProvider {
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(PROVIDER, "kontaktavtale", MKONTAKTAVTALE);
-        uriMatcher.addURI(PROVIDER, "kontaktavtale/#-#", KONTAKTAVTALESUB1);
-        uriMatcher.addURI(PROVIDER, "kontaktavtale/*-#", KONTAKTAVTALESUB2);
-        uriMatcher.addURI(PROVIDER, "kontaktavtale/#-*", KONTAKTAVTALESUB3);
-        uriMatcher.addURI(PROVIDER, "kontaktavtale/*-*", KONTAKTAVTALESUB4);
+        uriMatcher.addURI(PROVIDER, "kontaktavtale/#/#", KONTAKTAVTALESUB1);
+        uriMatcher.addURI(PROVIDER, "kontaktavtale/*/#", KONTAKTAVTALESUB2);
+        uriMatcher.addURI(PROVIDER, "kontaktavtale/#/*", KONTAKTAVTALESUB3);
+        uriMatcher.addURI(PROVIDER, "kontaktavtale/*/*", KONTAKTAVTALESUB4);
     }
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context) {
@@ -122,29 +122,29 @@ public class KontaktAvtaleProvider extends ContentProvider {
 
         if (uriMatcher.match(uri) == KONTAKTAVTALESUB4) {
 
-            Log.d("Case delete all rows: ", uri.getPathSegments().get(1));
+            Log.d("Case delete all rows: ", uri.getPathSegments().get(1) + "/"+uri.getPathSegments().get(2));
             int res = db.delete(TABLE_SHARED_KONTAKTAVTALE, null, null);
             getContext().getContentResolver().notifyChange(uri, null);
             return res;
         }
         else if (uriMatcher.match(uri) == KONTAKTAVTALESUB3) {
-            Log.d("Case delete all rows with spesific avtale: ", uri.getPathSegments().get(1));
-            String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[1]};
+            Log.d("Case delete all rows with spesific avtale: ", uri.getPathSegments().get(1) + "/"+uri.getPathSegments().get(2));
+            String[] selectionArguments = new String[]{uri.getPathSegments().get(2)};
             int res = db.delete(TABLE_SHARED_KONTAKTAVTALE,  KEY_ID2 + " = ?", selectionArguments);
             getContext().getContentResolver().notifyChange(uri, null);
             return res;
         }
         else if (uriMatcher.match(uri) == KONTAKTAVTALESUB2) {
-            Log.d("Case delete all rows with spesific contact: ", uri.getPathSegments().get(1));
-            String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0]};
+            Log.d("Case delete all rows with spesific contact: ", uri.getPathSegments().get(1) + "/"+uri.getPathSegments().get(2));
+            String[] selectionArguments = new String[]{uri.getPathSegments().get(1)};
             int res = db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ? ", selectionArguments);
             getContext().getContentResolver().notifyChange(uri, null);
             return res;
         }
 
         else if (uriMatcher.match(uri) == KONTAKTAVTALESUB1) {
-            Log.d("Case delete one row: ", uri.getPathSegments().get(1));
-            String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0],uri.getPathSegments().get(1).split("-")[1]};
+            Log.d("Case delete one roeew: ", uri.getPathSegments().get(1) + "/"+uri.getPathSegments().get(2));
+            String[] selectionArguments = new String[]{uri.getPathSegments().get(1),uri.getPathSegments().get(2)};
             int res = db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ?  AND " + KEY_ID2 + " = ?", selectionArguments);
             getContext().getContentResolver().notifyChange(uri, null);
             return res;

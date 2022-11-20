@@ -76,7 +76,7 @@ public class KontaktActivity extends AppCompatActivity {
             } catch (Exception ex) {
             }
             try {
-                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/" + String.valueOf(kontaktid)+"-*"), null, new String[]{String.valueOf(kontaktid)});
+                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/" + String.valueOf(kontaktid)+"/*"), null, new String[]{String.valueOf(kontaktid)});
             }
             catch (Exception ex) {
 

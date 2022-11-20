@@ -69,7 +69,7 @@ public class KontaktListActivity extends AppCompatActivity {
 
             }
             try {
-                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/" + id+"-*"), null, null);
+                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/" + id+"/*"), null, null);
             }
             catch (Exception ex) {
 

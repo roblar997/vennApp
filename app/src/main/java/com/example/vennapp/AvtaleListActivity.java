@@ -70,7 +70,7 @@ public class AvtaleListActivity extends AppCompatActivity {
 
             }
             try {
-                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/*-" + id), null, new String[]{String.valueOf(id)});
+                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/*/" + id), null, new String[]{String.valueOf(id)});
             }
             catch (Exception ex) {
 

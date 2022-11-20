@@ -82,7 +82,7 @@ public class AvtaleActivity extends AppCompatActivity {
             }
 
             try {
-                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/*-" + String.valueOf(avtaleId)), null, new String[]{String.valueOf(avtaleId)});
+                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/*/" + String.valueOf(avtaleId)), null, new String[]{String.valueOf(avtaleId)});
             }
             catch (Exception ex) {
 
