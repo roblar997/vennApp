@@ -113,8 +113,6 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.createNotificationChannel(channel);
     }
     public void startService(View v) {
-        Intent intent = new Intent(this, PeriodiskNotificationService.class);
-        this.startService(intent);
 
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -207,6 +205,8 @@ public class MainActivity extends AppCompatActivity {
 
         Intent periodiskIntent = new Intent();
         periodiskIntent.setAction("com.example.service.PeriodiskNotificationService");
+
+        //Sk
         sendBroadcast(periodiskIntent);
 
 
@@ -231,12 +231,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+        //Klargjør bare broadcast reveiver, og hva som skal sendes til den
         BroadcastReceiver myBroadcastReceiver = new AvtaleBroadcastReceiver();
         IntentFilter filter = new IntentFilter("com.example.service.PeriodiskNotificationService");
         filter.addAction("com.example.service.PeriodiskNotificationService");
         this.registerReceiver(myBroadcastReceiver, filter);
         createNotificationChannel();
+
         avtaleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

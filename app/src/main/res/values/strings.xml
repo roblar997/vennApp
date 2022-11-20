@@ -2,8 +2,8 @@
     <string name="app_name">Venn app</string>
     <string name="channel_name">Min Kanal</string>
     <string name="channel_description">Min Beskrivelse</string>
-    <integer name="hourNotify">14</integer>
-    <integer name="minuteNotify">55</integer>
+    <integer name="hourNotify">15</integer>
+    <integer name="minuteNotify">07</integer>
     <string name="message">Hei, vi har snart en avtale</string>
 
 </resources>
