@@ -118,7 +118,7 @@ public class KontaktAvtaleProvider extends ContentProvider {
     }
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        Log.d("Got path segment part 1 in delete: ", uri.getPathSegments().get(1) + " " );
+        Log.d("Got path segment part 1 in delete: ", uri.getPathSegments().get(1) + "/ " +uri.getPathSegments().get(2) );
 
         if (uriMatcher.match(uri) == KONTAKTAVTALESUB4) {
 
@@ -128,14 +128,14 @@ public class KontaktAvtaleProvider extends ContentProvider {
             return res;
         }
         else if (uriMatcher.match(uri) == KONTAKTAVTALESUB3) {
-            Log.d("Case delete all rows with spesific avtale: ", uri.getPathSegments().get(1) + "/"+uri.getPathSegments().get(2));
+            Log.d("Case delete all rows with spesific contact: ", uri.getPathSegments().get(1) + "/"+uri.getPathSegments().get(2));
             String[] selectionArguments = new String[]{uri.getPathSegments().get(2)};
             int res = db.delete(TABLE_SHARED_KONTAKTAVTALE,  KEY_ID2 + " = ?", selectionArguments);
             getContext().getContentResolver().notifyChange(uri, null);
             return res;
         }
         else if (uriMatcher.match(uri) == KONTAKTAVTALESUB2) {
-            Log.d("Case delete all rows with spesific contact: ", uri.getPathSegments().get(1) + "/"+uri.getPathSegments().get(2));
+            Log.d("Case delete all rows with spesific avtale: ", uri.getPathSegments().get(1) + "/"+uri.getPathSegments().get(2));
             String[] selectionArguments = new String[]{uri.getPathSegments().get(1)};
             int res = db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ? ", selectionArguments);
             getContext().getContentResolver().notifyChange(uri, null);
