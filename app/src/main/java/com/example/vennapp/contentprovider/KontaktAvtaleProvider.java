@@ -74,9 +74,9 @@ public class KontaktAvtaleProvider extends ContentProvider {
     @Override
     public String getType(Uri uri) {
         switch (uriMatcher.match(uri)) {
-            case MKONTAKTAVTALE | KONTAKTAVTALESUB1  | KONTAKTAVTALESUB2  | KONTAKTAVTALESUB3  | KONTAKTAVTALESUB4:
+            case MKONTAKTAVTALE  | KONTAKTAVTALESUB2  | KONTAKTAVTALESUB3  | KONTAKTAVTALESUB4:
                 return "vnd.android.cursor.dir/vnd.example.kontaktavtale";
-            case KONTAKTAVTALE  :
+            case KONTAKTAVTALE | KONTAKTAVTALESUB1  :
                 return "vnd.android.cursor.item/vnd.example.kontaktavtale";
             default:
                 throw new

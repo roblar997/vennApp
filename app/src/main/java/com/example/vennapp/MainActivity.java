@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale/*-*"),null, null);
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale/*/*"),null, null);
 
         }
         catch (Exception ex){
@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     public void startService(View v) {
         Intent intent = new Intent(this, PeriodiskNotificationService.class);
         this.startService(intent);
+
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Resources res = getResources();
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale/*-*"),null, null);
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale/*/*"),null, null);
 
         }
         catch (Exception ex){
