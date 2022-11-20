@@ -63,7 +63,7 @@ public class KontaktAvtaleActivity extends AppCompatActivity {
         boolean canShare = sharedPreferences.getBoolean("canShare",false);
         if(canShare) {
             try {
-                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/" + String.valueOf(kontaktId) + "-" + String.valueOf(avtaleId)), null, new String[]{String.valueOf(kontaktId), String.valueOf(avtaleId)});
+                getContentResolver().delete(Uri.parse("content://" + PROVIDER_KONTAKTAVTALE + "/kontaktavtale/" + Long.toString(kontaktId) + "-" + Long.toString(avtaleId)), null, null);
             } catch (Exception ex) {
 
             }

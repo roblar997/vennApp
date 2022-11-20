@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 public class AvtaleProvider extends ContentProvider {
     public static final String _ID = "_ID";
 
-    private static final String DB_NAVN = "sharedAvtaler.db";
+    private static final String DB_NAVN = "sharedAvtale.db";
     private static final int DB_VERSJON = 1;
     static String KEY_DATO = "Dato";
     static String KEY_TID = "Tid";

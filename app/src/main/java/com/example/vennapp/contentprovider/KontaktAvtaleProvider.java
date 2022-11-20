@@ -18,13 +18,13 @@ public class KontaktAvtaleProvider extends ContentProvider {
     static String KEY_REF_TABLE1 = "Kontakter";
     static String KEY_REF_ID2 = "_ID";
     static String KEY_REF_TABLE2 = "Avtaler";
-    private static final String DB_NAVN = "sharedKontaktAvtale.db";
+    private static final String DB_NAVN = "sharedKontaktAvtaler.db";
     private static final int DB_VERSJON = 1;
     private final static String TABLE_SHARED_KONTAKTAVTALE = "SharedKontaktAvtale";
     public final static String PROVIDER = "com.example.vennapp.contentprovider.KontaktAvtaleProvider";
     private static final int KONTAKTAVTALE = 1;
     private static final int MKONTAKTAVTALE = 2;
-
+    private static final int KONTAKTAVTALEWITHID = 3;
 
 
     KontaktAvtaleProvider.DatabaseHelper DBhelper;
@@ -35,6 +35,7 @@ public class KontaktAvtaleProvider extends ContentProvider {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(PROVIDER, "kontaktavtale", MKONTAKTAVTALE);
         uriMatcher.addURI(PROVIDER, "kontaktavtale/#", KONTAKTAVTALE);
+        uriMatcher.addURI(PROVIDER, "kontaktavtale/*", KONTAKTAVTALEWITHID);
     }
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context) {
@@ -71,7 +72,7 @@ public class KontaktAvtaleProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case MKONTAKTAVTALE:
                 return "vnd.android.cursor.dir/vnd.example.kontaktavtale";
-            case KONTAKTAVTALE:
+            case KONTAKTAVTALE | KONTAKTAVTALEWITHID :
                 return "vnd.android.cursor.item/vnd.example.kontaktavtale";
             default:
                 throw new
@@ -113,24 +114,28 @@ public class KontaktAvtaleProvider extends ContentProvider {
     }
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        if (uriMatcher.match(uri) == KONTAKTAVTALE) {
+        Log.d("Got path segment part 1 in delete: ", uri.getPathSegments().get(1) + " " + (uriMatcher.match(uri) == KONTAKTAVTALEWITHID));
+        if (uriMatcher.match(uri) == KONTAKTAVTALE || uriMatcher.match(uri) == KONTAKTAVTALEWITHID) {
              if(uri.getPathSegments().get(1).contains("*-*")){
                 db.delete(TABLE_SHARED_KONTAKTAVTALE, null, null);
                 getContext().getContentResolver().notifyChange(uri, null);
 
             }
              else if(uri.getPathSegments().get(1).contains("*-")){
+                 Log.d("Case delete all rows with spesific avtale: ", uri.getPathSegments().get(1));
                  String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[1]};
                  db.delete(TABLE_SHARED_KONTAKTAVTALE,  KEY_ID2 + " = ?", selectionArguments);
                  getContext().getContentResolver().notifyChange(uri, null);
              }
              else if(uri.getPathSegments().get(1).contains("-*")){
+                 Log.d("Case delete all rows with spesific contact: ", uri.getPathSegments().get(1));
                  String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0]};
                  db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ? ", selectionArguments);
                  getContext().getContentResolver().notifyChange(uri, null);
              }
 
             else if(uri.getPathSegments().get(1).contains("-")){
+                 Log.d("Case delete one row: ", uri.getPathSegments().get(1));
                 String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0],uri.getPathSegments().get(1).split("-")[1]};
                 db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ?  AND " + KEY_ID2 + " = ?", selectionArguments);
                 getContext().getContentResolver().notifyChange(uri, null);
@@ -139,10 +144,13 @@ public class KontaktAvtaleProvider extends ContentProvider {
 
             return 1;
         }
-        if (uriMatcher.match(uri) == MKONTAKTAVTALE) {
+        else if (uriMatcher.match(uri) == MKONTAKTAVTALE) {
             db.delete(TABLE_SHARED_KONTAKTAVTALE, null, null);
             getContext().getContentResolver().notifyChange(uri, null);
             return 2;
+        }
+        else{
+
         }
         return 0;
     }

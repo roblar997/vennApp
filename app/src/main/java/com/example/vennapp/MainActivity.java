@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale/#"),null, null);
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale/*-*"),null, null);
 
         }
         catch (Exception ex){
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         try{
-            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale/#"),null, null);
+            getContentResolver().delete(Uri.parse("content://"+ PROVIDER_KONTAKTAVTALE + "/kontaktavtale/*-*"),null, null);
 
         }
         catch (Exception ex){

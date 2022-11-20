@@ -14,7 +14,7 @@ import android.util.Log;
 public class KontaktProvider extends ContentProvider {
     public static final String _ID = "_ID";
 
-    private static final String DB_NAVN = "sharedKontakter.db";
+    private static final String DB_NAVN = "sharedKontakt.db";
     private static final int DB_VERSJON = 1;
     private final static String TABLE_SHARED_KONTAKTER = "SharedKontakter";
     public final static String PROVIDER = "com.example.vennapp.contentprovider.KontaktProvider";
