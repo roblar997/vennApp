@@ -70,9 +70,9 @@ public class KontaktAvtaleProvider extends ContentProvider {
     @Override
     public String getType(Uri uri) {
         switch (uriMatcher.match(uri)) {
-            case MKONTAKTAVTALE:
+            case MKONTAKTAVTALE | KONTAKTAVTALEWITHID:
                 return "vnd.android.cursor.dir/vnd.example.kontaktavtale";
-            case KONTAKTAVTALE | KONTAKTAVTALEWITHID :
+            case KONTAKTAVTALE  :
                 return "vnd.android.cursor.item/vnd.example.kontaktavtale";
             default:
                 throw new
@@ -115,38 +115,41 @@ public class KontaktAvtaleProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         Log.d("Got path segment part 1 in delete: ", uri.getPathSegments().get(1) + " " + (uriMatcher.match(uri) == KONTAKTAVTALEWITHID));
-        if (uriMatcher.match(uri) == KONTAKTAVTALE || uriMatcher.match(uri) == KONTAKTAVTALEWITHID) {
-             if(uri.getPathSegments().get(1).contains("*-*")){
-                db.delete(TABLE_SHARED_KONTAKTAVTALE, null, null);
-                getContext().getContentResolver().notifyChange(uri, null);
+        if (uriMatcher.match(uri) == KONTAKTAVTALE ) {
 
-            }
-             else if(uri.getPathSegments().get(1).contains("*-")){
-                 Log.d("Case delete all rows with spesific avtale: ", uri.getPathSegments().get(1));
-                 String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[1]};
-                 db.delete(TABLE_SHARED_KONTAKTAVTALE,  KEY_ID2 + " = ?", selectionArguments);
-                 getContext().getContentResolver().notifyChange(uri, null);
-             }
-             else if(uri.getPathSegments().get(1).contains("-*")){
-                 Log.d("Case delete all rows with spesific contact: ", uri.getPathSegments().get(1));
-                 String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0]};
-                 db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ? ", selectionArguments);
-                 getContext().getContentResolver().notifyChange(uri, null);
-             }
-
-            else if(uri.getPathSegments().get(1).contains("-")){
-                 Log.d("Case delete one row: ", uri.getPathSegments().get(1));
-                String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0],uri.getPathSegments().get(1).split("-")[1]};
-                db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ?  AND " + KEY_ID2 + " = ?", selectionArguments);
-                getContext().getContentResolver().notifyChange(uri, null);
-            }
 
 
             return 1;
         }
-        else if (uriMatcher.match(uri) == MKONTAKTAVTALE) {
-            db.delete(TABLE_SHARED_KONTAKTAVTALE, null, null);
-            getContext().getContentResolver().notifyChange(uri, null);
+        else if (uriMatcher.match(uri) == MKONTAKTAVTALE || uriMatcher.match(uri) == KONTAKTAVTALEWITHID) {
+            if(uri.getPathSegments().get(1).contains("*-*")){
+                Log.d("Case delete all rows: ", uri.getPathSegments().get(1));
+                db.delete(TABLE_SHARED_KONTAKTAVTALE, null, null);
+                getContext().getContentResolver().notifyChange(uri, null);
+
+            }
+            else if(uri.getPathSegments().get(1).contains("*-")){
+                Log.d("Case delete all rows with spesific avtale: ", uri.getPathSegments().get(1));
+                String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[1]};
+                db.delete(TABLE_SHARED_KONTAKTAVTALE,  KEY_ID2 + " = ?", selectionArguments);
+                getContext().getContentResolver().notifyChange(uri, null);
+            }
+            else if(uri.getPathSegments().get(1).contains("-*")){
+                Log.d("Case delete all rows with spesific contact: ", uri.getPathSegments().get(1));
+                String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0]};
+                db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ? ", selectionArguments);
+                getContext().getContentResolver().notifyChange(uri, null);
+            }
+
+            else if(uri.getPathSegments().get(1).contains("-")){
+                Log.d("Case delete one row: ", uri.getPathSegments().get(1));
+                String[] selectionArguments = new String[]{uri.getPathSegments().get(1).split("-")[0],uri.getPathSegments().get(1).split("-")[1]};
+                db.delete(TABLE_SHARED_KONTAKTAVTALE, KEY_ID1 + " = ?  AND " + KEY_ID2 + " = ?", selectionArguments);
+                getContext().getContentResolver().notifyChange(uri, null);
+            }
+            else{
+
+            }
             return 2;
         }
         else{
