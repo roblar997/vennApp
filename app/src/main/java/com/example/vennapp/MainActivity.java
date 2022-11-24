@@ -22,6 +22,7 @@ import android.telephony.SmsManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -57,6 +58,26 @@ public class MainActivity extends AppCompatActivity {
     DBHandlerKontakt dbHelperKontakt;
     DBHandlerAvtale dbHelperAvtale;
     DBHandlerKontaktAvtale dbHelperKontaktAvtale;
+
+    static String KEY_ID = "_ID";
+    static String KEY_DATO = "Dato";
+    static String KEY_TID = "Tid";
+    static String KEY_MELDING = "Melding";
+    static String TABLE_AVTALER = "Avtaler";
+    static String TABLE_KONTAKTER = "Kontakter";
+
+    static String KEY_ID1 = "kontaktId";
+    static String KEY_REF_ID1 = "_ID";
+    static String KEY_REF_TABLE1 = "Kontakter";
+    static String KEY_ID2 = "avtaleId";
+    static String KEY_REF_ID2 = "_ID";
+    static String KEY_REF_TABLE2 = "Avtaler";
+
+    static String TABLE_KONTAKTAVTALE = "KontaktAvtale";
+    static String KEY_FORNAVN = "Fornavn";
+    static String KEY_ETTERNAVN = "Etternavn";
+    static String KEY_TELEFON = "Telefon";
+
 
     public static String PROVIDER_AVTALE ="com.example.vennapp.contentprovider.AvtaleProvider" ;
     public static final Uri CONTENT_AVTALE_URI = Uri.parse("content://"+ PROVIDER_AVTALE + "/avtale");
@@ -104,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("message", message);
 
         editor.apply();
-
 
         //Slett alt innhold fra kontakt tabellen
         try{
@@ -205,6 +225,23 @@ public class MainActivity extends AppCompatActivity {
         dbHelperKontakt = new DBHandlerKontakt(this);
         dbHelperKontaktAvtale = new DBHandlerKontaktAvtale(this);
         db=dbHelperKontakt.getWritableDatabase();
+        String LAG_TABELL = "CREATE TABLE IF NOT EXISTS " + TABLE_AVTALER+ "(" + KEY_ID +" INTEGER PRIMARY KEY," + KEY_DATO + " TEXT," + KEY_TID + " TEXT," + KEY_MELDING + " TEXT" +")";
+        Log.d("SQL", LAG_TABELL);
+        db.execSQL(LAG_TABELL);
+        LAG_TABELL ="CREATE TABLE IF NOT EXISTS " + TABLE_KONTAKTAVTALE + "("
+                + KEY_ID1 + " INTEGER,"
+                + KEY_ID2 + " INTEGER,"
+                + "FOREIGN KEY("+ KEY_ID1 + ") REFERENCES " + KEY_REF_TABLE1 + "(" + KEY_REF_ID1 + "),"
+                + "FOREIGN KEY("+ KEY_ID2 + ") REFERENCES " + KEY_REF_TABLE2 + "(" + KEY_REF_ID2 + "),"
+                + "PRIMARY KEY(" + KEY_ID1 + "," + KEY_ID2 + "))";
+
+
+        Log.d("SQL", LAG_TABELL);
+        db.execSQL(LAG_TABELL);
+
+        LAG_TABELL = "CREATE TABLE IF NOT EXISTS " + TABLE_KONTAKTER + "(" + KEY_ID +" INTEGER PRIMARY KEY ," + KEY_FORNAVN + " TEXT," + KEY_ETTERNAVN + " TEXT," + KEY_TELEFON + " TEXT" + ")";
+        Log.d("SQL", LAG_TABELL);
+        db.execSQL(LAG_TABELL);
 
 
 
